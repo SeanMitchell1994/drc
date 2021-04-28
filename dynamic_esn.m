@@ -6,7 +6,7 @@ clear;
 train_len = 2000;       % length of training interval
 test_len = 1000;        % length of testing interval
 init_len = 100;         % warm up delay before training starts
-a = 0.3;              % leaking rate/learning rate
+a = 0.208;              % leaking rate/learning rate
 in_size = 1; 
 out_size = 1;
 res_size = 40;           % nxn size of the reservoir
@@ -22,23 +22,23 @@ dynamic_rev = true;
 % =============================================
 % load reservoir function, r(t) from a file
 % this should be a nxn matrix that matches the size of res_size
-r_t = load('Python/data/logistic_map_shaped.txt');
+r_t = load('../../Datasets/logistic_map_shaped.txt');
 
-d2 = load('lorenz_x1');
-d3 = d2.x1(1:1600);
-r_t = reshape(d3,res_size,[]);
+% d2 = load('lorenz_x1');
+% d3 = d2.x1(1:1600);
+% r_t = reshape(d3,res_size,[]);
 
 
 % load the training data
-data = load('MackeyGlass_t17.txt');
+data = load('../../Datasets/MackeyGlass_t17.txt');
 
 % d2 = load('henon_y');
 % data = d2.y_i';
 % d2 = load('henon_x');
 % data = d2.x_i';
 
-d2 = load('chua.mat');
-data = d2.y(:,3);
+% d2 = load('chua.mat');
+% data = d2.y(:,3);
 % 
 % d2 = load('lorenz_x1');
 % data = d2.x1;
