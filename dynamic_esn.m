@@ -82,14 +82,16 @@ rhoW = abs(eigs(W,1,'LM',opt));
 disp 'done.'
 W = W .* (1.25 / rhoW);
 
-% allocated memory for the design (collected states) matrix
+% Allocates memory for the design (collected states) matrix
+% This will hold the states of reservoir before linear regression and readout
 X = zeros(1+in_size+res_size,train_len-init_len);
 
 % set the corresponding target matrix directly
 Yt = data(init_len+2:train_len+1)';
 
 %% Training
-% run the reservoir with the data and collect X
+% =============================================
+% run the reservoir with the training data and store the state matrix
 x = zeros(res_size,1);
 for t = 1:train_len
 	u = data(t);
@@ -100,25 +102,24 @@ for t = 1:train_len
 	end
 end
 
-% train the output by ridge regression
+% Training the output via regression scheme (supervised learning)
+% This uses ridge regression, but any linear regression should work
 reg = 1e-8;  % regularization coefficient
-% direct equations from texts:
-X_T = X'; 
-Wout = Yt*X_T * inv(X*X_T + reg*eye(1+in_size+res_size));
-% using Matlab mldivide solver:
-%Wout = ((X*X' + reg*eye(1+inSize+resSize)) \ (X*Yt'))'; 
+X_T = X'; % sets X_T to the inverted state matrix
+Wout = Yt*X_T * inv(X*X_T + reg*eye(1+in_size+res_size)); % perform the regression and set the readout matrix, W_out to the result
 
 
 %% Testing
-% run the trained ESN in a generative mode. no need to initialize here, 
+% =============================================
+% Running the d_esn
 % because x is initialized with training data and we continue from there.
-Y = zeros(out_size, test_len);
-u = data(train_len+1);
+Y = zeros(out_size, test_len); % preallocating the output
+u = data(train_len+1); % a subset of data starting at the end of the training subset
 for t = 1:test_len 
-	x = (1-a)*x + a*tanh( W_in*[1;u] + W*x );
+	x = (1-a)*x + a*tanh( W_in*[1;u] + W*x ); % state equation
 
-	y = Wout*[1;u;x];
-	Y(:,t) = y;
+	y = Wout*[1;u;x]; % readout
+	Y(:,t) = y; % output we see
     
     if (run_generation == true)
         % generative mode:
