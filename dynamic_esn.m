@@ -1,4 +1,16 @@
+%% =============================================
+% Filename: dynamic_esn.m
+% Author: Sean Mitchell
+%
+% Purpose: MATLAB simulation of a reservoir
+% computer (RC) using a nonlinear function
+% as the reservoir
+% =============================================
+
 %% sys_init
+% Sets up the runtime environment, 
+% loads the datasets, 
+% and generates the reservoir
 
 % runtime parameters
 % =============================================
@@ -14,9 +26,11 @@ res_size = 40;           % nxn size of the reservoir
 % runtime flags
 % =============================================
 run_generation = true;  % what output mode are we doing?
-run_silent = false;
-sparse_rev = false; 
-dynamic_rev = true;
+                        % true = generative output  
+                        % false = predictive output
+run_silent = false;     % Do we want plots?
+sparse_rev = false;     % How connected should the neurons be to eachother within the reservoir?
+dynamic_rev = true;     % Do we want a reservoir based on a reservoir function?
 
 % Data load
 % =============================================
@@ -130,14 +144,18 @@ for t = 1:test_len
     end
 end
 
+%% Output
+%
+% Error computation
+% =============================================
 % compute MSE for the first errorLen time steps
 errorLen = 500;
 mse = sum((data(train_len+2:train_len+errorLen+1)'-Y(1,1:errorLen)).^2)./errorLen;
 disp( ['MSE = ', num2str( mse )] );
 
 
-%% Plotting
-
+% Plotting
+% =============================================
 if (run_silent == false)
     % plot some of it
     figure(10);
