@@ -4,3 +4,5 @@
 * Why?
 * How to use it?
 * Doc stuff
+* Requirements
+    * MATLAB (tested on R2020b)
