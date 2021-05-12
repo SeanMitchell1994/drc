@@ -1,2 +1,11 @@
 # Abstracted Logic
-gonna fill this out at some point
+This document describes the high level logical flow of the DRC
+
+## sys_init
+---
+
+## Training
+---
+
+## Testing
+---
