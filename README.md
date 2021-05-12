@@ -1,4 +1,4 @@
-# Dynamic Reservoir Computer
+# Dynamic Reservoir Computer (DRC)
 
 * What is this?
     * A software suite to test dynamic reservoir computers
