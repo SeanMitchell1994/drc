@@ -22,6 +22,13 @@ The system init phase has three main objectives
 
 ## Training
 ---
+The training phase operates in the follow sequence
+
+1. Preallocate a vector that stores the state information
+2. Loop over the training length
+3. Compute the reservoir state equation, ``x``
+4. if we're past the init length, store the result of the current reservoir state in the output vector, ``X``
+5. Run a regression scheme over the output vector, ``X``
 
 ## Testing
 ---

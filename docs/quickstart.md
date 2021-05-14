@@ -16,6 +16,8 @@ The training/test dataset is a time series vector.
 ---
 This section describes runtimes parameters at the top of the code. These will control various aspects of how the DRC runs and what output you get. All these values can be manually adjusted.
 
+Currently, the main code is [here](../dynamic_esn.m). This is what you'll want to run.
+
 | Params   | Description |
 | ----------- | ----------- |
 | train_len      | How big of a subset of data we train on       |
