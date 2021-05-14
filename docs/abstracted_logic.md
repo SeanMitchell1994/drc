@@ -28,10 +28,18 @@ The training phase operates in the follow sequence
 2. Loop over the training length
 3. Compute the reservoir state equation, ``x``
 4. if we're past the init length, store the result of the current reservoir state in the output vector, ``X``
-5. Run a regression scheme over the output vector, ``X``
+5. Run a regression scheme over the output vector, ``X`` and create the readout vector, ``W_out``
 
 ## Testing
 ---
+The testing phase operates in the follow sequence
+
+1. Preallocate the network output vector, ``Y``
+2. Grab a subset of the data we want to test on
+3. Loop over that data
+4. Compute the reservoir state equation, ``x`` for each timestep
+5. Multiply the reservoir state by the trained readout vector, ``W_out``
+6. Set the next data point based on the output mode
 
 ## Output
 ---
