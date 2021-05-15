@@ -1,3 +1,6 @@
+# logistic_map.py
+# short script to generate a text file with the logistics map
+
 import numpy as np
 
 length = 1600

@@ -1,5 +1,8 @@
+# Filename: henon_map.py
+# Author: Sean Mitchell
+# short script to generate a text file with the henon map
+
 import numpy as np
-import matplotlib.pyplot as plt
 
 length = 10000
 
@@ -18,7 +21,3 @@ for i in range(1,length):
 
 np.savetxt('../../datasets/data/henon_map_x.txt', x_i)
 np.savetxt('../../datasets/data/henon_map_y.txt', y_i)
-
-plt.plot(x_i,y_i,'.',markersize=1)
-plt.title('Henon Map')
-plt.show()
