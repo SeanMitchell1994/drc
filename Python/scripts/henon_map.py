@@ -16,8 +16,8 @@ for i in range(1,length):
     x_i[i] = 1 - alpha * x_i[i-1]**2 + y_i[i-1];
     y_i[i] = beta * x_i[i - 1];
 
-np.savetxt('../data/henon_map_x.txt', x_i)
-np.savetxt('../data/henon_map_y.txt', y_i)
+np.savetxt('../../datasets/data/henon_map_x.txt', x_i)
+np.savetxt('../../datasets/data/henon_map_y.txt', y_i)
 
 plt.plot(x_i,y_i,'.',markersize=1)
 plt.title('Henon Map')
