@@ -184,3 +184,6 @@ if (run_silent == false)
     errorbar(data(train_len+2:train_len+errorLen+1)',Y(1,1:errorLen),'x');
     title('Error Bars');
 end
+
+out_file = '../output/output.mat';
+save(out_file);
