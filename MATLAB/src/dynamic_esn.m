@@ -31,6 +31,7 @@ run_generation = true;  % what output mode are we doing?
 run_silent = false;     % Do we want plots?
 sparse_rev = false;     % How connected should the neurons be to eachother within the reservoir?
 dynamic_rev = true;     % Do we want a reservoir based on a reservoir function?
+save_outputs = true;    % Are we saving the workspace to a file after?
 
 % Data load
 % =============================================
@@ -185,5 +186,7 @@ if (run_silent == false)
     title('Error Bars');
 end
 
-out_file = '../output/output.mat';
-save(out_file);
+if (save_outputs == true)
+    out_file = '../output/output.mat';
+    save(out_file);
+end
