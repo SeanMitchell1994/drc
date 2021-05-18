@@ -43,24 +43,8 @@ r_t = load('../../datasets/logistic_map_shaped.txt');
 % d3 = d2.x1(1:1600);
 % r_t = reshape(d3,res_size,[]);
 
-
 % load the training data
 data = load('../../datasets/MackeyGlass_t17.txt');
-
-% d2 = load('henon_y');
-% data = d2.y_i';
-% d2 = load('henon_x');
-% data = d2.x_i';
-
-% d2 = load('chua.mat');
-% data = d2.y(:,3);
-% 
-% d2 = load('lorenz_x1');
-% data = d2.x1;
-% d2 = load('lorenz_y1');
-% data = d2.y1;
-% d2 = load('lorenz_z1');
-% data = d2.z1;
 
 % reservoir prep
 % =============================================
