@@ -5,6 +5,7 @@
 * Why?
     * For the study of the effects of nonlinear functions on reservoir computers
 * How to use it?
-    * [Please read the quickstart guide](docs/quickstart.md)
+    * [For MATALB, please read the quickstart guide](docs/quickstart.md)
+    * [For Python, please read this quickstart guide](Python/docs/quickstart.md)
 * Requirements
     * MATLAB (tested on R2020b)
