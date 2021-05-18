@@ -1,6 +1,6 @@
-# Quickstart Guide
+# MATLAB Quickstart Guide
 
-This is a quickstart guide for running the dynamic reservoir computer (DRC). 
+This is a quickstart guide for running the dynamic reservoir computer (DRC) using the MATLAB codebase 
 
 ## Datasets preparation
 ---

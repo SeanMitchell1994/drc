@@ -31,12 +31,13 @@ run_generation = true;  % what output mode are we doing?
 run_silent = false;     % Do we want plots?
 sparse_rev = false;     % How connected should the neurons be to eachother within the reservoir?
 dynamic_rev = true;     % Do we want a reservoir based on a reservoir function?
+save_outputs = true;    % Are we saving the workspace to a file after?
 
 % Data load
 % =============================================
 % load reservoir function, r(t) from a file
 % this should be a nxn matrix that matches the size of res_size
-r_t = load('../../Datasets/logistic_map_shaped.txt');
+r_t = load('../../datasets/logistic_map_shaped.txt');
 
 % d2 = load('lorenz_x1');
 % d3 = d2.x1(1:1600);
@@ -44,7 +45,7 @@ r_t = load('../../Datasets/logistic_map_shaped.txt');
 
 
 % load the training data
-data = load('../../Datasets/MackeyGlass_t17.txt');
+data = load('../../datasets/MackeyGlass_t17.txt');
 
 % d2 = load('henon_y');
 % data = d2.y_i';
@@ -183,4 +184,9 @@ if (run_silent == false)
     figure(4);
     errorbar(data(train_len+2:train_len+errorLen+1)',Y(1,1:errorLen),'x');
     title('Error Bars');
+end
+
+if (save_outputs == true)
+    out_file = '../output/output.mat';
+    save(out_file);
 end
