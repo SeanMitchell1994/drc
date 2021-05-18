@@ -51,8 +51,15 @@ new_rc.Plots()
 
 For the complete code, see [here](../src/rc_run.py).
 
-## Running the DRC
----
-
 ## Understanding the output
 ---
+The output of your DRC is located in the variable ``Y``. This array has the trained output from the readout layer and can be considered the "result" of the DRC's run. The program will generate a MSE and give your the error between a segment of the truth data (the original date you fed it) and the output of ``Y``.
+
+* Predictive outputs will tend to be much more accurate than Generative outputs. Don't be surprised if you see a large increase in MSE going from prediction to generation
+
+If you aren't running in silent mode, you will also get four plots.
+
+1. A plot of some (or all) of the original data
+2. A plot of the output data vs the truth data
+3. A plot of the output weights
+4. A plot of the neuron activity
