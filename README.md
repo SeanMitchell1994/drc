@@ -8,4 +8,9 @@
     * [For MATALB, please read the quickstart guide](docs/quickstart.md)
     * [For Python, please read this quickstart guide](Python/docs/quickstart.md)
 * Requirements
-    * MATLAB (tested on R2020b)
+    * MATLAB
+        * MATLAB (tested on R2020b)
+    * Python
+        * Python 3.9.1 or higher
+        * numpy
+        * matplotlib
