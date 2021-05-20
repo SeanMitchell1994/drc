@@ -1,3 +1,5 @@
+import os
+import errno
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import linalg 
@@ -133,7 +135,17 @@ class RC:
         print('MSE = ' + str( self.mse ))
         print('Done')
 
+    def Output_Init(self):
+        # Checks if the output path exists and makes it if it doesn't
+        try:
+            os.makedirs("../output/")
+        except FileExistsError:
+            # path already exists, move on
+            pass
+
     def Plots(self,silent=False):
+
+        self.Output_Init()
 
         # plot some of it
         plt.figure(10).clear()
