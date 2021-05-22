@@ -11,8 +11,6 @@ def Sinewave(timestep):
     return x
 
 def main():
-    #print("Hello World!")
-
     b = []
     for i in range(1,100):
         a = Sinewave(i)
