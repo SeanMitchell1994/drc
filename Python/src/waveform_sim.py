@@ -16,8 +16,10 @@ def main():
         a = Sinewave(i)
         b.append(a)
 
-    plt.plot(b)
-    plt.show()
+    #plt.plot(b)
+    #plt.show()
+
+    return b
 
 if __name__ == "__main__":
     main()
