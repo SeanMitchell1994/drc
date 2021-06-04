@@ -8,7 +8,7 @@
 trainLen = 784;
 testLen = 784;
 initLen = 25;
-data = load('MackeyGlass_t17.txt');
+data = load('../../datasets/MackeyGlass_t17.txt');
 
 % d2 = load('henon_y');
 % data = d2.y_i';
