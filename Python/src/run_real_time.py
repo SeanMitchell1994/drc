@@ -24,14 +24,16 @@ def main():
 
     for j in range(0,300):
 
+        # Generate sinewave for real time testing
         a = Sinewave(j)
         b.append(a)
 
-        #new_rc.Load_Data(b)
+        # Put the data into the RC to test
         new_rc.data = b
         new_rc.train_len = 0
-        new_rc.Run_Predictive(j)
 
+        # Test
+        new_rc.Run_Predictive(j)
         new_rc.Get_MSE(500)
 
         # plot some signals
@@ -41,6 +43,7 @@ def main():
         plt.title('Target and generated signals $y(n)$ starting at $n=0$')
         plt.legend(['Target signal', 'Free-running predicted signal'])
     
+        # Live plotting
         plt.pause(0.01)
 
     plt.show()
