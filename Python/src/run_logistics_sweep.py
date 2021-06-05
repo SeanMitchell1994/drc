@@ -19,7 +19,7 @@ def lm_sweep(a):
 
 def main():
     param = 3
-    iterate = 0.01
+    iterate = 0.001
     mse_list = []
     param_list = []
     while param <= 4.0:
