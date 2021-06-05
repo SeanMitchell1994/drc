@@ -19,7 +19,7 @@ def lm_sweep(a):
 
 def main():
     param = 3
-    iterate = 0.1
+    iterate = 0.01
     mse_list = []
     param_list = []
     while param <= 4.0:
@@ -37,13 +37,13 @@ def main():
         param = param + iterate
 
     plt.figure(1).clear()
-    plt.plot( param_list,mse_list )
+    plt.plot( param_list,mse_list, linewidth=1 )
     plt.title('Logistics Map Parameter Sweep')
     plt.xlabel('a')
     plt.ylabel('MSE')
 
     # values for fixed points from https://mathworld.wolfram.com/LogisticMap.html
-    xcoords = [3, 3.82842712, 3.44948974, 3.73817237, 3.62655316, 3.54409035]
+    xcoords = [3, 3.82842712, 3.44948974, 3.73817237, 3.62655316, 3.54409035, 3.70164076, 3.56440726]
     for xc in xcoords:
         plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
     plt.legend(['MSE','Fixed Points'],loc="lower left")
