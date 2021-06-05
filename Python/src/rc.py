@@ -134,6 +134,7 @@ class RC:
             self.Y[0,0:self.error_len] ) ) / self.error_len
         print('MSE = ' + str( self.mse ))
         print('Done')
+        return self.mse
 
     def Output_Init(self):
         # Checks if the output path exists and makes it if it doesn't
