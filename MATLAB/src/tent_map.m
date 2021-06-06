@@ -1,7 +1,7 @@
-k = [0:0.5:1];                 % length of time series
+k = [0:0.5:35];                 % length of time series
 y_i = zeros(1,length(k));   % Pre-allocation
-y_i(1) = 0.4;                 % initial condition
-mu = 2;
+y_i(1) = 0.61;                 % initial condition
+mu = 1.2;
 
 % Solving the iterated solution
 for i = 2:length(y_i)
@@ -12,4 +12,5 @@ for i = 2:length(y_i)
     end
 end
 
-plot(k,y_i)
+%plot(k,y_i)
+stem(y_i)
