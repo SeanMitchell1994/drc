@@ -10,4 +10,4 @@ new_rc.Run_Predictive(1000)
 new_rc.Get_MSE(500)
 
 silent_run = True
-new_rc.Plots()
+new_rc.Plots(silent_run)
