@@ -11,7 +11,7 @@ class RC:
 
         # === Runtime environment parameters ===
         self.reservoir_size = reservoir_size    # Size of reservoir
-        self.leak = leak                        # leaking rate
+        self.leak = leak                        # leaking/learning rate
         self.train_len = 0                      # Length of training phase
         self.test_len = 0                       # Length of testing phase
         self.init_len = 100                     # Index delay between end of training and start of testing
@@ -132,7 +132,7 @@ class RC:
             u = self.data[self.train_len+t+1] 
         print('Done!')
 
-    def Get_MSE(self, error_len):
+    def Compute_MSE(self, error_len):
         print('Computing Mean Square Error (MSE)...',end='')
         self.error_len = error_len
 
@@ -180,3 +180,8 @@ class RC:
 
         if (silent == False):
             plt.show()
+
+    # === Accessor Functions ===
+    def Get_MSE(self):
+        # Accessor function to get MSE
+        return self.mse

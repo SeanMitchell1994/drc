@@ -34,7 +34,8 @@ def main():
 
         # Test
         new_rc.Run_Predictive(j)
-        new_rc.Get_MSE(500)
+        new_rc.Compute_MSE(500)
+        mse = new_rc.Get_MSE()
 
         # plot some signals
 

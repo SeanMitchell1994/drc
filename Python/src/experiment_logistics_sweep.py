@@ -30,7 +30,8 @@ def main():
         new_rc.Generate_Reservoir()
         new_rc.Train(2000)
         new_rc.Run_Predictive(1000)
-        mse = new_rc.Get_MSE(500)
+        new_rc.Compute_MSE(500)
+        mse = new_rc.Get_MSE()
 
         mse_list.append(mse)
         param_list.append(param)
