@@ -9,31 +9,32 @@ class RC:
     def __init__(self, reservoir_size, leak):
         print("Creating instance of RC...", end='')
 
-        # Runtime properties
-        self.reservoir_size = reservoir_size
-        self.leak = leak    # leaking rate
-        self.train_len = 0
-        self.test_len = 0
-        self.init_len = 100
-        self.in_size = 1
-        self.out_size = self.in_size
+        # === Runtime environment parameters ===
+        self.reservoir_size = reservoir_size    # Size of reservoir
+        self.leak = leak                        # leaking rate
+        self.train_len = 0                      # Length of training phase
+        self.test_len = 0                       # Length of testing phase
+        self.init_len = 100                     # Index delay between end of training and start of testing
+        self.in_size = 1                        # Dimension(s) of input
+        self.out_size = self.in_size            # Dimension(s) of output
 
-        # Data structures
+        # === Data structures ===
         self.data = 0
-        self.rc_data = 0
-        self.test_data = 0
+        self.rc_data = 0                        # Dataset for the reservoir core
+        self.test_data = 0                      # Data we train against
+        self.training_data = 0                  # Data we test against
 
-        # Member variables
-        self.Win = 0
-        self.W = 0
-        self.rhoW = 0
-        self.X = 0
-        self.x = 0
-        self. Yt = 0
+        # === Member variables ===
+        self.Win = 0                            # Weights mapping the input data -> reservoir
+        self.W = 0                              # Weights mapping the interal connections of the reservoir
+        self.rhoW = 0                           # Spectral radius
+        self.X = 0                              # Weights of the readout layer
+        self.x = 0                              # State equation of the reservoir
+        self.Yt = 0                             # Feedforward input data matrix for use in linear regression
 
-        # Error variables
-        self.error_len = 0
-        self.mse = 0
+        # === Error variables ===
+        self.error_len = 0                      # What subset of data do we check against for our error rate?
+        self.mse = 0                            # Our actual error rate
 
         print("Done!")
 
@@ -54,14 +55,11 @@ class RC:
 
     def Load_Training_Data(self, data):
         print('Loading training data...', end='')
-        self.test_data = np.loadtxt(data)
+        self.training_data = np.loadtxt(data)
         print('Done!')
 
     def Generate_Reservoir(self):
         # generate the ESN reservoir
-        #inSize = outSize = 1
-        #resSize = 1000
-        #a = 0.3 # leaking rate
         print('Generating reservoir...',end='')
         np.random.seed(42)
         self.Win = (np.random.rand(self.reservoir_size,1 + self.in_size) - 0.5) * 1
@@ -115,26 +113,22 @@ class RC:
             self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
             y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
             self.Y[:,t] = y
-            # generative mode:
+
+            # Generative mode
             u = y
-            ## this would be a predictive mode:
-            #u = data[trainLen+t+1] 
         print('Done!')
 
     def Run_Predictive(self, test_len):
         print('Running RC in predictive mode...',end='')
         self.test_len = test_len
-        # run the trained ESN in a generative mode. no need to initialize here, 
-        # because x is initialized with training data and we continue from there.
         self.Y = np.zeros((self.out_size,self.test_len))
         u = self.data[self.train_len]
         for t in range(self.test_len):
             self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
             y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
             self.Y[:,t] = y
-            # generative mode:
-            #u = y
-            ## this would be a predictive mode:
+   
+            # Predictive mode
             u = self.data[self.train_len+t+1] 
         print('Done!')
 
@@ -143,12 +137,10 @@ class RC:
         self.error_len = error_len
 
         # compute MSE for the first errorLen time steps
-        #errorLen = 500
         self.mse = sum( np.square( self.data[self.train_len+1:self.train_len+self.error_len+1] - 
             self.Y[0,0:self.error_len] ) ) / self.error_len
         print('Done!')
         print('MSE = ' + str( self.mse ))
-        #return self.mse
 
     def Output_Init(self):
         # Checks if the output path exists and makes it if it doesn't
