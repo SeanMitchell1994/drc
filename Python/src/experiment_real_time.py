@@ -1,6 +1,8 @@
+# Local includes
 from rc import *
-import numpy as np
 
+# System includes
+import numpy as np
 import math
 import random
 import time
