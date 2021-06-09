@@ -49,7 +49,6 @@ def main():
     plt.xlabel('x')
     plt.ylabel('MSE')
 
-    # values for fixed points from https://mathworld.wolfram.com/LogisticMap.html
     xcoords = [0,1/9,2/9,3/9,6/9,7/9,8/9]#, 1.41]#, 1.8393]
     for xc in xcoords:
         plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)

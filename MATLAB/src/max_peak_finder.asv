@@ -6,8 +6,8 @@ starting_index = 100;           % where does listening start?
 y_i = zeros(1,length(k));       % Pre-allocation of times series
 y_i(1) = 0.1;                     % initial condition
 % a = 3.564407266095;             % y = ax(1-x)
-a = 3.4;
-da = 0.0000001;                  % a increment per iteration
+a = 3.544090;
+da = 0.00001;                  % a increment per iteration
 peak_cur = 0;                   % highest peak found
 peak_index = starting_index-1;                 % where was the last highest peak?
 peak_diff = 0;                  % distance between two peaks 
@@ -16,7 +16,7 @@ index_cur = 0;
 peak_diff_max = 0;
 a_max = 0;
 
-while a < 3.5
+%while a < 4
     % Solving the iterated solution
     for i = 2:length(y_i)
         y_i(i) = (a * y_i(i-1)) * (1 - y_i(i-1));
@@ -27,23 +27,25 @@ while a < 3.5
     for i2 = 0:length(j)-1
         index_cur = starting_index + i2;
         val_cur = y_i(starting_index + i2);
-
-        if ((abs(peak_cur - val_cur)) < 0.0000001)
+        fprintf('peak: %f, cur: %f\n',peak_cur, val_cur);
+        
+        if ((abs(peak_cur - val_cur)) < 0.0)
+            fprintf('foo2\n',peak_diff);
             peak_diff = (starting_index + i2) - peak_index;
-            
-            if (peak_diff > peak_diff_max)
-                peak_diff_max = peak_diff;
-                a_max = a;
-            end
+%             
+%             if (peak_diff > peak_diff_max)
+%                 peak_diff_max = peak_diff;
+%                 a_max = a;
+%             end
             fprintf('%d peak found\n',peak_diff);
             break
         end
-
-        if (val_cur > peak_cur)
-            peak_cur = val_cur;
-            peak_index = starting_index + i2;
-        end
+% 
+%         if (val_cur > peak_cur)
+%             peak_cur = val_cur;
+%             peak_index = starting_index + i2;
+        %end
     end
-    a = a + da;
+    %a = a + da;
     
-end
+%end

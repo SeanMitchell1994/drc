@@ -37,6 +37,7 @@ def main():
         new_rc.Get_MSE(500)
 
         # plot some signals
+
         plt.figure(1).clear()
         plt.plot( new_rc.data[new_rc.train_len+1:new_rc.train_len+new_rc.test_len+1], 'g' )
         plt.plot( new_rc.Y.T, 'b' )
@@ -44,7 +45,7 @@ def main():
         plt.legend(['Target signal', 'Free-running predicted signal'],loc="lower left")
     
         # Live plotting
-        plt.pause(0.05)
+        plt.pause(0.01)
 
     plt.show()
 
