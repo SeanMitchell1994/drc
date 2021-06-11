@@ -1,6 +1,6 @@
 from rc import *
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def lm_sweep(a):
     length = 1600
@@ -19,7 +19,7 @@ def lm_sweep(a):
 
 def main():
     param = 3
-    iterate = 0.001
+    iterate = 0.0025
     mse_list = []
     param_list = []
     while param <= 4.0:
