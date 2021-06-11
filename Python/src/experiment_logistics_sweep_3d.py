@@ -48,20 +48,9 @@ def main():
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.plot_surface(plotx,ploty,plotz*scale_factor,cmap='YlGnBu_r',vmin=np.nanmin(z), vmax=np.nanmax(z)) 
-
     ax.set_xlabel('orbit diagram')
     ax.set_ylabel('r')
     ax.set_zlabel('MSE (scaled)')
-    #plt.plot( param_list,mse_list, linewidth=1 )
-    #plt.title('Logistics Map Parameter Sweep')
-    #plt.xlabel('a')
-    #plt.ylabel('MSE')
-
-    # values for fixed points from https://mathworld.wolfram.com/LogisticMap.html
-    #xcoords = [3, 3.82842712, 3.44948974, 3.73817237, 3.62655316, 3.54409035, 3.70164076, 3.56440726, 3.939200000003982, 3.774900000003636,3.685500000003447, 3.872300000003841,3.866200000003828,3.859600000003814,3.801700000003692,3.755000000003594,3.751400000003586,3.711700000003502,3.724800000003530,3.640300000003351, 3.640300000003351,3.605200000003277]
-    #for xc in xcoords:
-    #    plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
-    #plt.legend(['MSE','Fixed Points'],loc="lower left")
     plt.show()
 
 if __name__ == "__main__":
