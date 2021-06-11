@@ -16,12 +16,8 @@ def tm_sweep(x):
 
     y_i_temp = y_i.reshape(40,40)
     y_i_shaped = np.transpose(y_i_temp)
-    #plt.figure(1).clear()
-    #plt.plot(y_i_shaped, linewidth=1 )
-    #plt.show()
+
     return y_i_shaped
-
-
 
 def main():
     param = 0.001
