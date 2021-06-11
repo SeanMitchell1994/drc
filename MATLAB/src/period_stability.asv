@@ -1,0 +1,17 @@
+syms x
+r = 3.25;
+p = r*x - r*x^2;
+p1 = a = compose(f,g)
+roots = solve( p );
+for k = 1:length(roots)
+    Df = diff(p);
+    x = roots(k);
+    Df = subs(Df);
+    Df;
+
+    if (Df > 1)
+        fprintf("unstable\n")
+    elseif (Df < 1)
+        fprintf("stable\n")
+    end
+end

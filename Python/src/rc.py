@@ -7,45 +7,60 @@ from scipy import linalg
 
 class RC:
     def __init__(self, reservoir_size, leak):
-        self.reservoir_size = reservoir_size
-        self.leak = leak    # leaking rate
-        self.train_len = 0
-        self.test_len = 0
-        self.init_len = 100
-        self.in_size = 1
-        self.out_size = self.in_size
+        print("Creating instance of RC...", end='')
 
+        # === Runtime environment parameters ===
+        self.reservoir_size = reservoir_size    # Size of reservoir
+        self.leak = leak                        # leaking/learning rate
+        self.train_len = 0                      # Length of training phase
+        self.test_len = 0                       # Length of testing phase
+        self.init_len = 100                     # Index delay between end of training and start of testing
+        self.in_size = 1                        # Dimension(s) of input
+        self.out_size = self.in_size            # Dimension(s) of output
+
+        # === Data structures ===
         self.data = 0
-        self.rc_data = 0
-        self.test_data = 0
+        self.rc_data = 0                        # Dataset for the reservoir core
+        self.test_data = 0                      # Data we train against
+        self.training_data = 0                  # Data we test against
 
-        self.Win = 0
-        self.W = 0
-        self.rhoW = 0
-        self. X = 0
-        self.x = 0
-        self. Yt = 0
+        # === Member variables ===
+        self.Win = 0                            # Weights mapping the input data -> reservoir
+        self.W = 0                              # Weights mapping the interal connections of the reservoir
+        self.rhoW = 0                           # Spectral radius
+        self.X = 0                              # Weights of the readout layer
+        self.x = 0                              # State equation of the reservoir
+        self.Yt = 0                             # Feedforward input data matrix for use in linear regression
 
-        self.error_len = 0
-        self.mse = 0
+        # === Error variables ===
+        self.error_len = 0                      # What subset of data do we check against for our error rate?
+        self.mse = 0                            # Our actual error rate
+
+        print("Done!")
 
     def Load_Reservoir_Data(self, data):
-        print('Loading data...')
+        print('Loading reservoir core data...', end='')
         self.rc_data = np.loadtxt(data)
-        print('Done')
+        print('Done!')
 
     def Load_Data(self, data):
-        print('Loading data...')
+        print('Loading data...', end='')
         self.data = np.loadtxt(data)
-        print('Done')
+        print('Done!')
 
     def Load_Test_Data(self, data):
-        print('Loading data...')
+        print('Loading test data...', end='')
         self.test_data = np.loadtxt(data)
-        print('Done')
+        print('Done!')
+
+    def Load_Training_Data(self, data):
+        print('Loading training data...', end='')
+        self.training_data = np.loadtxt(data)
+        print('Done!')
 
     def Generate_Reservoir(self):
         # generate the ESN reservoir
+        print('Generating reservoir...',end='')
 
         print('Generating reservoir')
         np.random.seed(42)
@@ -53,15 +68,16 @@ class RC:
         self.W = np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5
         rcd_t = np.transpose(self.rc_data)
         self.W = np.dot(self.W, rcd_t)
+        print('Done!')
 
         # normalizing and setting spectral radius (correct, slow):
-        print('Computing spectral radius...')
+        print('Computing spectral radius...',end='')
         self.rhoW = max(abs(linalg.eig(self.W)[0]))
-        print('Done')
         self.W *= 1.25 / self.rhoW
+        print('Done!')
 
     def Train(self, train_length):
-        print('Training the reservoir computer...')
+        print('Training the reservoir computer...',end='')
         self.train_len = train_length
 
         # allocated memory for the design (collected states) matrix
@@ -86,10 +102,10 @@ class RC:
         # using scipy.linalg.solve:
         self.Wout = linalg.solve( np.dot(self.X,self.X.T) + reg*np.eye(1+self.in_size + self.reservoir_size), 
             np.dot(self.X,self.Yt.T) ).T
-        print('Done')
+        print('Done!')
 
     def Run_Generative(self, test_len):
-        print('Running RC in generative mode...')
+        print('Running RC in generative mode...', end='')
         self.test_len = test_len
         # run the trained ESN in a generative mode. no need to initialize here, 
         # because x is initialized with training data and we continue from there.
@@ -99,40 +115,34 @@ class RC:
             self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
             y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
             self.Y[:,t] = y
-            # generative mode:
+
+            # Generative mode
             u = y
-            ## this would be a predictive mode:
-            #u = data[trainLen+t+1] 
-        print('Done')
+        print('Done!')
 
     def Run_Predictive(self, test_len):
-        print('Running RC in predictive mode...')
+        print('Running RC in predictive mode...',end='')
         self.test_len = test_len
-        # run the trained ESN in a generative mode. no need to initialize here, 
-        # because x is initialized with training data and we continue from there.
         self.Y = np.zeros((self.out_size,self.test_len))
         u = self.data[self.train_len]
         for t in range(self.test_len):
             self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
             y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
             self.Y[:,t] = y
-            # generative mode:
-            #u = y
-            ## this would be a predictive mode:
+   
+            # Predictive mode
             u = self.data[self.train_len+t+1] 
-        print('Done')
+        print('Done!')
 
-    def Get_MSE(self, error_len):
-        print('Computing Mean Square Error (MSE)')
+    def Compute_MSE(self, error_len):
+        print('Computing Mean Square Error (MSE)...',end='')
         self.error_len = error_len
 
         # compute MSE for the first errorLen time steps
-        #errorLen = 500
         self.mse = sum( np.square( self.data[self.train_len+1:self.train_len+self.error_len+1] - 
             self.Y[0,0:self.error_len] ) ) / self.error_len
+        print('Done!')
         print('MSE = ' + str( self.mse ))
-        print('Done')
-        return self.mse
 
     def Output_Init(self):
         # Checks if the output path exists and makes it if it doesn't
@@ -172,3 +182,8 @@ class RC:
 
         if (silent == False):
             plt.show()
+
+    # === Accessor Functions ===
+    def Get_MSE(self):
+        # Accessor function to get MSE
+        return self.mse

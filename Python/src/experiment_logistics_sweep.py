@@ -1,6 +1,6 @@
 from rc import *
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def lm_sweep(a):
     length = 1600
@@ -19,7 +19,7 @@ def lm_sweep(a):
 
 def main():
     param = 3
-    iterate = 0.001
+    iterate = 0.0025
     mse_list = []
     param_list = []
     while param <= 4.0:
@@ -30,7 +30,8 @@ def main():
         new_rc.Generate_Reservoir()
         new_rc.Train(2000)
         new_rc.Run_Predictive(1000)
-        mse = new_rc.Get_MSE(500)
+        new_rc.Compute_MSE(500)
+        mse = new_rc.Get_MSE()
 
         mse_list.append(mse)
         param_list.append(param)
