@@ -2,9 +2,8 @@ from rc import *
 import matplotlib.pyplot as plt
 import numpy as np
 
-def lm_sweep(a):
-    length = 1600
-    #a = 3.900142000000020
+def lm_sweep(a, res_size):
+    length = res_size * res_size
 
     y_i = np.zeros(length)
     y_i[0] = 0.7920
@@ -12,20 +11,23 @@ def lm_sweep(a):
     for j in range(1,length):
         y_i[j] = (a * y_i[j-1]) * (1 -  y_i[j-1])
 
-    y_i_temp = y_i.reshape(40,40)
+    y_i_temp = y_i.reshape(res_size,res_size)
     y_i_shaped = np.transpose(y_i_temp)
 
     return y_i_shaped
 
 def main():
     param = 3
-    iterate = 0.0025
+    iterate = 0.01
+    res_size = 40
     mse_list = []
     param_list = []
+
+
     while param <= 4.0:
-        new_rc = RC(40,0.35)
+        new_rc = RC(res_size,0.35)
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
-        new_rc.rc_data  = lm_sweep(param)
+        new_rc.rc_data  = lm_sweep(param, res_size)
         new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
         new_rc.Generate_Reservoir()
         new_rc.Train(2000)

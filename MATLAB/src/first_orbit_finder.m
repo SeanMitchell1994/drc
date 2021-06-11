@@ -6,7 +6,7 @@ starting_index = 100;           % where does listening start?
 y_i = zeros(1,length(k));       % Pre-allocation of times series
 y_i(1) = 0.1;                     % initial condition
 % a = 3.564407266095;             % y = ax(1-x)
-a = 1;
+a = 3.2;
 da = 0.00001;                  % a increment per iteration
 peak_cur = 0;                   % highest peak found
 peak_index = starting_index;                 % where was the last highest peak?

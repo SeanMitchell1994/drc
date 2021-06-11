@@ -1,19 +1,20 @@
 syms x
 r = 3.25;
 p = r*x - r*x^2;
-p1 = compose(p,p);
-p1 = p1 - x;
-roots = solve( p1 );
+p = compose(p,p);
+p = compose(p,p);
+p = p - x;
+roots = solve(p);
 
 for k = 1:length(roots)
-    Df = real(diff(p1));
+    Df = real(diff(p));
     x = real(roots(k));
-    Df = subs(Df);
+    Df = abs(subs(Df));
     real(Df);
 
     if (Df > 1)
-        fprintf("unstable\n")
+        fprintf("%f unstable\n", x)
     elseif (Df < 1)
-        fprintf("stable\n")
+        fprintf("%f stable\n", x)
     end
 end
