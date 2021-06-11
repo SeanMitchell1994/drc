@@ -61,6 +61,8 @@ class RC:
     def Generate_Reservoir(self):
         # generate the ESN reservoir
         print('Generating reservoir...',end='')
+
+        print('Generating reservoir')
         np.random.seed(42)
         self.Win = (np.random.rand(self.reservoir_size,1 + self.in_size) - 0.5) * 1
         self.W = np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5
