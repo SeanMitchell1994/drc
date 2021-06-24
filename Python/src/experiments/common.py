@@ -1,3 +1,10 @@
+# ============================================
+# common.py
+# Simple script containing various setup cmds 
+# that all the experiments need to run
+# ============================================
+
+# Lets us grab the class defintions from the parent directory
 import os
 import sys
 import inspect

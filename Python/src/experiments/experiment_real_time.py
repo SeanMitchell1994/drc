@@ -1,4 +1,5 @@
-# Local includes
+# Local imports
+import common
 from rc import *
 
 # System includes

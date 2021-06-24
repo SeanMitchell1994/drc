@@ -1,3 +1,4 @@
+import common
 from rc import *
 import matplotlib.pyplot as plt
 import numpy as np

@@ -1,8 +1,11 @@
-import common
-from rc import *
+# System imports
 import matplotlib.pyplot as plt
 import numpy as np
 from multiprocessing import Process, Pool
+
+# Local imports
+import common
+from rc import *
 
 def lm_sweep(a, res_size):
     length = res_size * res_size

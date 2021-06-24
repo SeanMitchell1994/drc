@@ -1,7 +1,10 @@
-from rc import *
 import matplotlib.pyplot as plt
 import numpy as np
 from multiprocessing import Process, Pool
+
+# Local imports
+import common
+from rc import *
 
 def lm_sweep(a, res_size):
     length = res_size * res_size
@@ -24,7 +27,7 @@ def main():
     res_size = 40
     mse_list = []
     param_list = []
-    while res_size <= 3200:
+    while res_size <= 1600:
         new_rc = RC(res_size,0.35)
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         new_rc.rc_data  = lm_sweep(param,res_size)

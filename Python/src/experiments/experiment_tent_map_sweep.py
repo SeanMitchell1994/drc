@@ -1,6 +1,8 @@
-from rc import *
 import matplotlib.pyplot as plt
 
+# Local imports
+import common
+from rc import *
 
 def tm_sweep(x):
     length = 1600
