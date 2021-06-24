@@ -1,3 +1,4 @@
+import common
 from rc import *
 import matplotlib.pyplot as plt
 import numpy as np
@@ -32,7 +33,7 @@ def run_exp(param):
 
 def main():
     param = 3
-    iterate = 0.0001
+    iterate = 0.01
     res_size = 40
     values = []
     while param <= 4.0:
