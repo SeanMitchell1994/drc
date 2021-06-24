@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits import mplot3d
 import scipy.interpolate as interp
+import random
 
 def lm_sweep(a):
     length = 1600
@@ -19,9 +20,22 @@ def lm_sweep(a):
 
     return y_i_shaped
 
+def bifurt(r, a):
+    length = 1.0/a + 1.0
+
+    while r < 4:
+        y_i = np.zeros(int(length))
+        y_i[0] = random.uniform(0, 1)
+
+        for i in range(1,int(length)):
+            y_i[i] = (r * y_i[i-1]) * (1 -  y_i[i-1])
+        r = r + a
+
+        np.savetxt('../../datasets/orbit_2.txt', y_i)
+
 def main():
     param = 3
-    iterate = 0.0001
+    iterate = 0.001
     mse_list = []
     param_list = []
     while param <= 4.0:
@@ -39,7 +53,8 @@ def main():
         param_list.append(param)
         param = param + iterate
 
-    z = np.loadtxt('../../datasets/orbit.txt')
+    bifurt(3,iterate)
+    z = np.loadtxt('../../datasets/orbit_2.txt')
 
     plotx,ploty, = np.meshgrid(np.linspace(np.min(z),np.max(z),10),\
                            np.linspace(np.min(param_list),np.max(param_list),10))
