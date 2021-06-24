@@ -1,7 +1,11 @@
-from rc import *
+# System imports
 import matplotlib.pyplot as plt
 import numpy as np
 from multiprocessing import Process, Pool
+
+# Local imports
+import common
+from rc import *
 
 def lm_sweep(a, res_size):
     length = res_size * res_size
@@ -32,7 +36,7 @@ def run_exp(param):
 
 def main():
     param = 3
-    iterate = 0.0001
+    iterate = 0.01
     res_size = 40
     values = []
     while param <= 4.0:

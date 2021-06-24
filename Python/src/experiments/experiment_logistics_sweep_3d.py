@@ -1,9 +1,12 @@
-from rc import *
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits import mplot3d
 import scipy.interpolate as interp
 import random
+
+# Local imports
+import common
+from rc import *
 
 def lm_sweep(a):
     length = 1600
