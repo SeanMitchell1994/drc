@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 def tm_sweep(x):
     length = 1600
-    mu = 2
+    mu = x
     y_i = np.zeros(length)
-    y_i[0] = x; 
+    y_i[0] = 1; 
 
     for i in range(1,length):
         if (y_i[i - 1] < 0.5):
@@ -21,7 +21,7 @@ def tm_sweep(x):
 
 def main():
     param = 0.001
-    iterate = 0.01
+    iterate = 0.001
     mse_list = []
     param_list = []
     #tm_sweep()
@@ -43,7 +43,7 @@ def main():
     plt.figure(1).clear()
     plt.plot( param_list,mse_list, linewidth=1 )
     plt.title('Tent Map Parameter Sweep')
-    plt.xlabel('x')
+    plt.xlabel('mu')
     plt.ylabel('MSE')
 
     xcoords = [0,1/9,2/9,3/9,6/9,7/9,8/9]
