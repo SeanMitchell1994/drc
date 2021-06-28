@@ -101,8 +101,8 @@ def main():
     param = 0
     iterate = 0.001
     res_size = 81
-    r = 3.923
-    learning_rate = 0.1
+    r = 3.5
+    learning_rate = 0.3
     #lambda_01 = 0
     #lambda_02 = 0
     length = 10000
