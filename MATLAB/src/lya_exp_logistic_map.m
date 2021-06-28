@@ -20,4 +20,6 @@ for(r=3:0.001:4)
 end
 r=3:0.001:4;
 plot(r,lyap);
-set(gca,'ydir','reverse')
+grid on;
+line(xlim, [0,0], 'Color', 'k','LineStyle','--'); % Draw line for X axis.
+%set(gca,'ydir','reverse')
