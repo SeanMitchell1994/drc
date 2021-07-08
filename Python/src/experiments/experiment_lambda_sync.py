@@ -99,9 +99,9 @@ def Match_Lya_Exp(lya_exp, r_list, lya_list):
 def main():
     # Variables we need
     param = 0
-    iterate = 0.001
-    res_size = 81
-    r = 3.5
+    iterate = 0.01
+    res_size = 256
+    r = 3.448
     learning_rate = 0.3
     #lambda_01 = 0
     #lambda_02 = 0
@@ -117,23 +117,23 @@ def main():
 
     # Setting up the data and finding our lyapunov exponent match
     lm_data = lm_sweep(r, res_size, length)
-    lambdas_lm,r_list_lm = Lyapunov_Exponent_lm(iterate)
-    lambdas_sm,r_list_sm = Lyapunov_Exponent_sm(iterate)
+    lambdas_lm,r_list_lm = Lyapunov_Exponent_lm(0.0001)
+    lambdas_sm,r_list_sm = Lyapunov_Exponent_sm(0.0001)
 
     match_index, match_lya = Match_Parameter(r, r_list_lm, lambdas_lm)
     match_index_2, match_r = Match_Lya_Exp(match_lya, r_list_sm, lambdas_sm)
 
     # Sweeping the shfit map
-    while param <= 2:
+    while param <= 3:
         new_rc = RC(res_size,learning_rate)
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         new_rc.rc_data  = sm_sweep(param, res_size)
         new_rc.data = lm_data
         #new_rc.Load_Data('../../datasets/logistic_map_raw.txt')
         new_rc.Generate_Reservoir()
-        new_rc.Train(4000)
-        new_rc.Run_Generative(250)
-        new_rc.Compute_MSE(250)
+        new_rc.Train(500)
+        new_rc.Run_Generative(2000)
+        new_rc.Compute_MSE(2000)
         mse = new_rc.Get_MSE()
 
         mse_list.append(mse)
@@ -143,14 +143,18 @@ def main():
     print(mse_list.index(min(mse_list)))
     print(mse_list[mse_list.index(min(mse_list))])
 
+    stddev = np.std(mse_list)
+    print("std dev: ", stddev)
+
     # Plotting
     plt.figure(1).clear()
     plt.plot( param_list,mse_list, linewidth=1 )
+    plt.plot(param_list[mse_list.index(min(mse_list))],mse_list[mse_list.index(min(mse_list))],'ro') 
     plt.title('Shift Map Parameter Sweep')
-    plt.xlabel('a parameter')
+    plt.xlabel('Sweep parameter (a)')
     plt.ylabel('MSE')
     plt.axvline(x=r_list_sm[match_index_2], color='k', linestyle='--', linewidth=1)
-    plt.legend(['MSE','Lambda_01 = Lambda_02'],loc="upper left")
+    plt.legend(['MSE','Minimum','Lambda_01 = Lambda_02'],loc="upper left")
     plt.show()
 
 if __name__ == "__main__":

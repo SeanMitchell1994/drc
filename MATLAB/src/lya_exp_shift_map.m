@@ -1,6 +1,6 @@
-lyap=zeros(1,1000);
+lyap2=zeros(1,1000);
 j=0;
-for(r=0:0.001:2)
+for(r=0:0.001:3)
     xn1=rand(1);
     lyp=0;
     j=j+1;
@@ -15,10 +15,10 @@ for(r=0:0.001:2)
     end
     %calculate lyapun
     lyp=lyp/10000;
-    lyap(j)=lyp;
+    lyap2(j)=lyp;
 end
-r=0:0.001:2;
-plot(r,lyap);
+r=0:0.001:3;
+plot(r,lyap2);
 xlabel('r')
 ylabel('Lambda')
 grid on;

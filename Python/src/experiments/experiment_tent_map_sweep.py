@@ -42,6 +42,13 @@ def main():
         param_list.append(param)
         param = param + iterate
 
+
+    stddev = np.std(mse_list)
+    print("std dev: ", stddev)
+
+    mean = np.mean(mse_list)
+    print("mean MSE: ", mean)
+
     plt.figure(1).clear()
     plt.plot( param_list,mse_list, linewidth=1 )
     plt.title('Tent Map Parameter Sweep')

@@ -35,16 +35,22 @@ def run_exp(param):
         return (param,mse)
 
 def main():
-    param = 3
-    iterate = 0.001
+    param = 3.5
+    iterate = 0.0001
     res_size = 40
     values = []
-    while param <= 4.0:
+    while param <= 3.75:
         values.append(param)
         param = param + iterate
 
     pool = Pool(processes=8)
     x,y = zip(*pool.map(run_exp, values))
+
+    stddev = np.std(y)
+    print("std dev: ", stddev)
+
+    mean = np.mean(y)
+    print("mean MSE: ", mean)
     
     plt.figure(1).clear()
     plt.plot( x,y, linewidth=1 )
@@ -53,14 +59,18 @@ def main():
     plt.ylabel('MSE')
 
     # values for fixed points from https://mathworld.wolfram.com/LogisticMap.html
-    #xcoords = [3, 3.82842712, 3.44948974, 3.73817237, 3.62655316, 3.54409035, 3.70164076, 3.56440726, 3.939200000003982, 3.774900000003636,3.685500000003447, 3.872300000003841,3.866200000003828,3.859600000003814,3.801700000003692,3.755000000003594,3.751400000003586,3.711700000003502,3.724800000003530,3.640300000003351, 3.640300000003351,3.605200000003277]
+    xc1 = [3,3.44948974]
+    xc1 = [3.73817237, 3.62655316, 3.54409035, 3.70164076, 3.56440726,3.685500000003447,3.711700000003502,3.724800000003530,3.640300000003351, 3.640300000003351,3.605200000003277]
+    #xc1 =  [3.82842712, 3.939200000003982, 3.774900000003636, 3.872300000003841,3.866200000003828,3.859600000003814,3.801700000003692,3.755000000003594,3.751400000003586]
     #even_fp = [3.540650000010093, 3.568640000010277, 3.571900000010298]
     #odd_fp = [3, 3.436550000009411, 3.5635300000102433, 3.569950000010285, 3.570210000010287, 3.570730000010290]
     #for xc in even_fp:
     #    plt.axvline(x=xc, color='r', linestyle='--', linewidth=1)
     #for yc in odd_fp:
     #    plt.axvline(x=yc, color='g', linestyle='--', linewidth=1)
-    #plt.legend(['MSE','Even Fixed Points', 'Odd Fixed Points'],loc="lower left")
+    for xc in xc1:
+        plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
+    plt.legend(['MSE','Fixed Points'],loc="upper left")
     plt.show()
 
 if __name__ == "__main__":
