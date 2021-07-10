@@ -40,7 +40,9 @@ new_rc.rc_data  = sm_sweep(4.2, res_size)
 #new_rc.data = lm_data
 new_rc.Generate_Reservoir()
 new_rc.Train(1000)
-new_rc.Run_Generative(1000)
+#new_rc.Run_Generative(1000)
+#new_rc.Run_Predictive(1000)
+new_rc.Run_Generative_Stability(1000, 150)
 new_rc.Compute_MSE(1000)
 
 silent_run = True

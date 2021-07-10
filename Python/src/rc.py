@@ -1,6 +1,7 @@
 import os
 import errno
 import numpy as np
+import random
 import matplotlib.pyplot as plt
 from scipy import linalg 
 # numpy.linalg is also an option for even fewer dependencies
@@ -120,18 +121,38 @@ class RC:
             u = y
         print('Done!')
 
-    def Run_Predictive(self, test_len):
-        print('Running RC in predictive mode...',end='')
+    def Run_Generative_Stability(self, test_len, stop_t):
+        print('Running RC in generative mode (stability test)...', end='')
         self.test_len = test_len
+        # run the trained ESN in a generative mode. no need to initialize here, 
+        # because x is initialized with training data and we continue from there.
         self.Y = np.zeros((self.out_size,self.test_len))
         u = self.data[self.train_len]
         for t in range(self.test_len):
             self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
             y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
             self.Y[:,t] = y
+
+            # Generative mode
+            if (t < stop_t):
+                u = y
+            else:
+                y = 0
+        print('Done!')
+
+    def Run_Predictive(self, test_len):
+        print('Running RC in predictive mode...',end='')
+        self.test_len = test_len
+        self.Y = np.zeros((self.out_size,self.test_len))
+        u = self.data[self.train_len]
+        for t in range(self.test_len):
+            self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) ) 
+            y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
+            self.Y[:,t] = y
    
             # Predictive mode
-            u = self.data[self.train_len+t+1] 
+            u = self.data[self.train_len+t+1] # Ideal (non-noise) prediction
+            #u = self.data[self.train_len+t+1] + random.uniform(-0.1, 0.1) # Noise prediction
         print('Done!')
 
     def Compute_MSE(self, error_len):
@@ -168,6 +189,9 @@ class RC:
         plt.plot( self.Y.T, 'b' )
         plt.title('Target and generated signals $y(n)$ starting at $n=0$')
         plt.legend(['Target signal', 'Free-running predicted signal'])
+        #xc1 = [600]
+        #for xc in xc1:
+        #    plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
         plt.savefig('../output/target_predicted_signal.png', bbox_inches='tight')
 
         plt.figure(2).clear()
