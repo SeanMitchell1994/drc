@@ -14,6 +14,7 @@ def sm_sweep(a, res_size):
 
     y_i = np.zeros(length)
     y_i[0] = random.uniform(0.1, 0.9)
+    y_i[0] = 0.2
 
     for j in range(1,length):
         y_i[j] = a * 2*y_i[j-1] % 1
@@ -39,7 +40,7 @@ def Lyapunov_Exponent_sm(iterate):
     r_list = []
 
     xmin = 0
-    xmax = 2
+    xmax = 4
 
     rvalues = np.arange(xmin, xmax, iterate)
 
@@ -99,10 +100,10 @@ def Match_Lya_Exp(lya_exp, r_list, lya_list):
 def main():
     # Variables we need
     param = 0
-    iterate = 0.01
-    res_size = 256
-    r = 3.448
-    learning_rate = 0.3
+    iterate = 0.001
+    res_size = 40
+    r = 3.9
+    learning_rate = 0.1
     #lambda_01 = 0
     #lambda_02 = 0
     length = 10000
@@ -124,16 +125,17 @@ def main():
     match_index_2, match_r = Match_Lya_Exp(match_lya, r_list_sm, lambdas_sm)
 
     # Sweeping the shfit map
-    while param <= 3:
+    while param <= 4:
         new_rc = RC(res_size,learning_rate)
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         new_rc.rc_data  = sm_sweep(param, res_size)
         new_rc.data = lm_data
         #new_rc.Load_Data('../../datasets/logistic_map_raw.txt')
         new_rc.Generate_Reservoir()
-        new_rc.Train(500)
-        new_rc.Run_Generative(2000)
-        new_rc.Compute_MSE(2000)
+        new_rc.Train(1000)
+        new_rc.Run_Generative(5000)
+        #new_rc.Run_Predictive(1000)
+        new_rc.Compute_MSE(5000)
         mse = new_rc.Get_MSE()
 
         mse_list.append(mse)
@@ -146,15 +148,22 @@ def main():
     stddev = np.std(mse_list)
     print("std dev: ", stddev)
 
+    z1 = np.polyfit(param_list, mse_list, 1)
+    p = np.poly1d(z1)
+
     # Plotting
     plt.figure(1).clear()
     plt.plot( param_list,mse_list, linewidth=1 )
+    plt.plot( param_list,p(param_list),'r--', linewidth=1)
     plt.plot(param_list[mse_list.index(min(mse_list))],mse_list[mse_list.index(min(mse_list))],'ro') 
     plt.title('Shift Map Parameter Sweep')
     plt.xlabel('Sweep parameter (a)')
     plt.ylabel('MSE')
     plt.axvline(x=r_list_sm[match_index_2], color='k', linestyle='--', linewidth=1)
     plt.legend(['MSE','Minimum','Lambda_01 = Lambda_02'],loc="upper left")
+    plt.ylim([0, 1])
+    plt.axvspan(0, r_list_sm[match_index_2], alpha=0.1, color='green')
+    plt.axvspan(r_list_sm[match_index_2], 4, alpha=0.1, color='red')
     plt.show()
 
 if __name__ == "__main__":

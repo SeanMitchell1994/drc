@@ -3,6 +3,7 @@ import errno
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import math
 from scipy import linalg 
 # numpy.linalg is also an option for even fewer dependencies
 
@@ -117,8 +118,11 @@ class RC:
             y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
             self.Y[:,t] = y
 
+            # anti-windup
+            #gain = 0.01
             # Generative mode
-            u = y
+            u = y #- (0.9*y)
+            #u = y + random.uniform(-0.05, 0.05) # Noise prediction
         print('Done!')
 
     def Run_Generative_Stability(self, test_len, stop_t):
@@ -138,6 +142,23 @@ class RC:
                 u = y
             else:
                 y = 0
+        print('Done!')
+
+    def Run_Predictive_Stability(self, test_len, stop_t):
+        print('Running RC in predictive mode (stability test)...',end='')
+        self.test_len = test_len
+        self.Y = np.zeros((self.out_size,self.test_len))
+        u = self.data[self.train_len]
+        for t in range(self.test_len):
+            self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) ) 
+            y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
+            self.Y[:,t] = y
+   
+            # Predictive mode
+            if (t < stop_t):
+                u = self.data[self.train_len+t+1] # Ideal (non-noise) prediction
+            else:
+                u = 0
         print('Done!')
 
     def Run_Predictive(self, test_len):
