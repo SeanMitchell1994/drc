@@ -228,6 +228,19 @@ class RC:
         if (silent == False):
             plt.show()
 
+    def Save_Metrics(self):
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, '../run/metrics/metrics.txt')
+        f = open(filename, "w+")
+
+        s = []
+        s.append("Reservoir Size: " + str(self.reservoir_size))
+        s.append("Learning rate: " + str(self.leak))
+
+        for metric in s:
+            f.write(metric)
+            f.write("\n")
+
     # === Accessor Functions ===
     def Get_MSE(self):
         # Accessor function to get MSE

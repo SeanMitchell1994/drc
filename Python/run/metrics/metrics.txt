@@ -1,0 +1,2 @@
+Reservoir Size: 120
+Learning rate: 0.3
