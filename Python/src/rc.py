@@ -236,6 +236,14 @@ class RC:
         s = []
         s.append("Reservoir Size: " + str(self.reservoir_size))
         s.append("Learning rate: " + str(self.leak))
+        s.append("Training Length: " + str(self.train_len))
+        s.append("Testing Length: " + str(self.test_len))
+        s.append("Init Length: " + str(self.init_len))
+        s.append("In Size: " + str(self.in_size))
+        s.append("Out Size: " + str(self.out_size))         
+        s.append("rho_W: " + str(self.rhoW))
+        s.append("Error Length: " + str(self.error_len))
+        s.append("mse: " + str(self.mse))
 
         for metric in s:
             f.write(metric)
