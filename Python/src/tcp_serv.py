@@ -28,7 +28,7 @@ def main():
 
     cur_step = 1
     last_step = 0
-    max_steps = 500
+    max_steps = 250
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))

@@ -20,7 +20,7 @@ def sm_sweep(a, res_size):
 
 
 def main():
-    param = 16
+    param = 8
     iterate = 0.001
     res_size = 40
     ic = 0.001

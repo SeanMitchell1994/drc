@@ -33,45 +33,64 @@ def Sinewave(length):
         for i in range(1,multipath):
             y_i[j] = y_i[j] + (a*math.sin(j/100 - delay) + noise)
 
-    #print(y_i)
-    #np.savetxt('E:\School\Graduate\Research\Code\MATLAB\datasets/sinewave.txt', y_i)
-
     return y_i
-
 
 def main():
 
-    avg_mse = 0
-    runs = 100
+    # simulation parameters
+    training_length = 5
+    mse_list = []
+    param_list = []
+    increment = 1
+    sub_runs = 100
+    runs = 15
 
     for i in range(runs):
+        avg_mse = 0
+        
+        for j in range(sub_runs):
 
-        param = 2.2
-        iterate = 0.01
-        res_size = 40
-        #Sinewave(10001)
-        new_rc = RC(40,0.3)
-        #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
-        new_rc.rc_data  = sm_sweep(param, res_size)
-        #new_rc.data  = Sinewave(2000)
-        new_rc.data = Sinewave(10000)
-        new_rc.Generate_Reservoir()
+            # RC setup
+            param = 2.2
+            iterate = 0.01
+            res_size = 40
 
-        for i in range(1,5):
+            new_rc = RC(40,0.3)
+            new_rc.rc_data  = sm_sweep(param, res_size)
             new_rc.data = Sinewave(10000)
-            new_rc.Train(5000)
+            new_rc.Generate_Reservoir()
 
-        new_rc.data = Sinewave(10000)
-        #new_rc.Train(1000)
-        #new_rc.Run_Generative(1000)
-        new_rc.Run_Predictive(500)
-        new_rc.Compute_MSE(500)
-        mse = new_rc.Get_MSE()
-        avg_mse = avg_mse + mse
+            # RC training
+            for k in range(1,training_length):
+                new_rc.data = Sinewave(10000)
+                new_rc.Train(5000)
 
-    #new_rc.Plots()
-    avg_mse = avg_mse/runs
-    print(avg_mse)
+            # RC run
+            new_rc.data = Sinewave(10000)
+            #new_rc.Run_Generative(1000)
+            new_rc.Run_Predictive(500)
+            new_rc.Compute_MSE(500)
+            mse = new_rc.Get_MSE()
+            avg_mse = avg_mse + mse
+
+        # Metrics
+        avg_mse = avg_mse/runs
+        mse_list.append(avg_mse)
+        param_list.append(training_length)
+        training_length = training_length + increment
+
+    # Trendline computation
+    z1 = np.polyfit(param_list, mse_list, 1)
+    p = np.poly1d(z1)
+
+    # Plotting
+    plt.figure(1).clear()
+    plt.plot( param_list,mse_list, linewidth=1 )            # Data
+    plt.plot( param_list,p(param_list),'r--', linewidth=1)  # Trendline
+    plt.title('Training Length Sweep')
+    plt.xlabel('Training Length')
+    plt.ylabel('MSE')
+    plt.show()
 
 if __name__ == "__main__":
     main()
