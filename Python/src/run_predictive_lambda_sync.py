@@ -33,7 +33,7 @@ def lm_sweep(res_size):
 
 res_size = 256
 lm_data = lm_sweep(res_size)
-new_rc = RC(res_size,0.4)
+new_rc = RC(res_size,0.3)
 #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
 #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
 new_rc.Load_Data('../../datasets/lorenz_x.txt')
@@ -41,9 +41,9 @@ new_rc.rc_data  = sm_sweep(2.2, res_size)
 #new_rc.data = lm_data
 new_rc.Generate_Reservoir()
 new_rc.Train(5000)
-#new_rc.Run_Predictive(2000)
-new_rc.Run_Generative(1000)
-new_rc.Compute_MSE(1000)
+new_rc.Run_Predictive(2000)
+#new_rc.Run_Generative(1000)
+new_rc.Compute_MSE(2000)
 
 silent_run = True
 new_rc.Plots()

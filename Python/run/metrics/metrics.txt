@@ -1,0 +1,10 @@
+Reservoir Size: 120
+Learning rate: 0.3
+Training Length: 2000
+Testing Length: 1000
+Init Length: 100
+In Size: 1
+Out Size: 1
+rho_W: 20.526227409719205
+Error Length: 500
+mse: 2.1421996391090777e-07

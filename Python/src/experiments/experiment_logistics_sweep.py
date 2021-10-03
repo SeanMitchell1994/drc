@@ -39,8 +39,8 @@ def run_exp(param):
 
 def main():
     param = 3.0
-    iterate = 0.0001
-    res_size = 40
+    iterate = 0.001
+    res_size = 120
     values = []
     while param <= 4:
         values.append(param)
@@ -81,10 +81,10 @@ def main():
     #    plt.axvline(x=xc, color='r', linestyle='--', linewidth=1)
     #for yc in odd_fp:
     #    plt.axvline(x=yc, color='g', linestyle='--', linewidth=1)
-    for xc in xc1:
-       plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
-    for xc in xc3:
-       plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
+    #for xc in xc1:
+    #   plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
+    #for xc in xc3:
+    #   plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
     #plt.legend(['MSE','Fixed Points'],loc="upper left")
     plt.show()
 
