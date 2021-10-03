@@ -39,7 +39,7 @@ def run_exp(param):
 
 def main():
     param = 3.0
-    iterate = 0.001
+    iterate = 0.0001
     res_size = 120
     values = []
     while param <= 4:
