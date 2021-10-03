@@ -4,6 +4,7 @@ import numpy as np
 import random
 import math 
 from multiprocessing import Process, Pool
+from numba import jit
 
 # Local imports
 import common
@@ -14,7 +15,7 @@ def sm_sweep(a, res_size):
 
     y_i = np.zeros(length)
     y_i[0] = random.uniform(0.1, 0.9)
-    y_i[0] = 0.2
+    y_i[0] = 0.4
 
     for j in range(1,length):
         y_i[j] = a * 2*y_i[j-1] % 1
@@ -29,6 +30,7 @@ def lm_sweep(a, res_size,length):
 
     y_i = np.zeros(length)
     y_i[0] = random.uniform(0.1, 0.9)
+    y_i[0] = 0.2
     for j in range(1,length):
         y_i[j] = (a * y_i[j-1]) * (1 -  y_i[j-1])
 
@@ -100,10 +102,10 @@ def Match_Lya_Exp(lya_exp, r_list, lya_list):
 def main():
     # Variables we need
     param = 0
-    iterate = 0.001
-    res_size = 40
-    r = 3.9
-    learning_rate = 0.1
+    iterate = 0.01
+    res_size = 240
+    r = 3.7
+    learning_rate = 0.3
     #lambda_01 = 0
     #lambda_02 = 0
     length = 10000
@@ -122,20 +124,22 @@ def main():
     lambdas_sm,r_list_sm = Lyapunov_Exponent_sm(0.0001)
 
     match_index, match_lya = Match_Parameter(r, r_list_lm, lambdas_lm)
-    match_index_2, match_r = Match_Lya_Exp(match_lya, r_list_sm, lambdas_sm)
-
+    #match_index_2, match_r = Match_Lya_Exp(match_lya, r_list_sm, lambdas_sm)
+    match_index_2, match_r = Match_Lya_Exp(0.8438, r_list_sm, lambdas_sm)
+    
     # Sweeping the shfit map
     while param <= 4:
         new_rc = RC(res_size,learning_rate)
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         new_rc.rc_data  = sm_sweep(param, res_size)
-        new_rc.data = lm_data
+        #new_rc.data = lm_data
+        new_rc.Load_Data('../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/logistic_map_raw.txt')
         new_rc.Generate_Reservoir()
-        new_rc.Train(1000)
-        new_rc.Run_Generative(5000)
-        #new_rc.Run_Predictive(1000)
-        new_rc.Compute_MSE(5000)
+        new_rc.Train(7000)
+        #new_rc.Run_Generative(1000)
+        new_rc.Run_Predictive(1000)
+        new_rc.Compute_MSE(1000)
         mse = new_rc.Get_MSE()
 
         mse_list.append(mse)
@@ -160,8 +164,8 @@ def main():
     plt.xlabel('Sweep parameter (a)')
     plt.ylabel('MSE')
     plt.axvline(x=r_list_sm[match_index_2], color='k', linestyle='--', linewidth=1)
-    plt.legend(['MSE','Minimum','Lambda_01 = Lambda_02'],loc="upper left")
-    plt.ylim([0, 1])
+    plt.legend(['MSE','Trendline','Minimum','Lambda_01 = Lambda_02'],loc="upper left")
+    #plt.ylim([-0.01, 0.01])
     plt.axvspan(0, r_list_sm[match_index_2], alpha=0.1, color='green')
     plt.axvspan(r_list_sm[match_index_2], 4, alpha=0.1, color='red')
     plt.show()

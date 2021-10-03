@@ -1,6 +1,6 @@
 lyap2=zeros(1,1000);
 j=0;
-for(r=0:0.001:3)
+for(r=0:0.001:4)
     xn1=rand(1);
     lyp=0;
     j=j+1;
@@ -17,7 +17,7 @@ for(r=0:0.001:3)
     lyp=lyp/10000;
     lyap2(j)=lyp;
 end
-r=0:0.001:3;
+r=0:0.001:4;
 plot(r,lyap2);
 xlabel('r')
 ylabel('Lambda')
