@@ -39,7 +39,7 @@ def run_exp(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 4)
         new_rc.Load_Reservoir_Function(sm_sweep(param, res_size, sm_ic))
-        new_rc.Load_Data('../../datasets/lorenz_x.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
         #new_rc.Load_Data('E:\School\Graduate\Research\Code\MATLAB\datasets\chua_x.txt')
         new_rc.Generate_Reservoir()
