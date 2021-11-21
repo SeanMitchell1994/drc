@@ -7,7 +7,7 @@ import math
 from scipy import linalg 
 # numpy.linalg is also an option for even fewer dependencies
 
-class RC:
+class ESN:
     def __init__(self, reservoir_size, leak):
         #print("Creating instance of RC...", end='')
 
@@ -22,7 +22,7 @@ class RC:
 
         # === Data structures ===
         self.data = 0
-        self.rc_data = 0                        # Dataset for the reservoir core
+        #self.rc_data = 0                        # Dataset for the reservoir core
         self.test_data = 0                      # Data we train against
         self.training_data = 0                  # Data we test against
 
@@ -40,13 +40,10 @@ class RC:
 
         #print("Done!")
 
-    def Load_Reservoir_Data(self, data):
-        #print('Loading reservoir core data...', end='')
-        self.rc_data = np.loadtxt(data)
-        #print('Done!')
-
-    def Load_Reservoir_Function(self, fcn):
-        self.rc_data = fcn
+    #def Load_Reservoir_Data(self, data):
+    #    print('Loading reservoir core data...', end='')
+    #    self.rc_data = np.loadtxt(data)
+    #    print('Done!')
 
     def Load_Data(self, data):
         #print('Loading data...', end='')
@@ -71,8 +68,8 @@ class RC:
         np.random.seed(42)
         self.Win = (np.random.rand(self.reservoir_size,1 + self.in_size) - 0.5) * 1
         self.W = np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5
-        rcd_t = np.transpose(self.rc_data)
-        self.W = np.dot(self.W, rcd_t)
+        #rcd_t = np.transpose(self.rc_data)
+        #self.W = np.dot(self.W, rcd_t)
         #print('Done!')
 
         # normalizing and setting spectral radius (correct, slow):
@@ -148,7 +145,7 @@ class RC:
         print('Done!')
 
     def Run_Predictive_Stability(self, test_len, stop_t):
-        print('Running RC in predictive mode (stability test)...',end='')
+        #print('Running RC in predictive mode (stability test)...',end='')
         self.test_len = test_len
         self.Y = np.zeros((self.out_size,self.test_len))
         u = self.data[self.train_len]
@@ -162,7 +159,7 @@ class RC:
                 u = self.data[self.train_len+t+1] # Ideal (non-noise) prediction
             else:
                 u = 0
-        print('Done!')
+        #print('Done!')
 
     def Run_Predictive(self, test_len):
         #print('Running RC in predictive mode...',end='')

@@ -31,19 +31,28 @@ def lm_sweep(res_size):
 
     return y_i
 
-res_size = 256
+res_size = 120
 lm_data = lm_sweep(res_size)
-new_rc = RC(res_size,0.1)
+new_rc = RC(res_size,0.3)
 #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
 #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
 new_rc.Load_Data('../../datasets/lorenz_x.txt')
-new_rc.rc_data  = sm_sweep(3.2, res_size)
+new_rc.rc_data  = sm_sweep(2.0, res_size)
 #new_rc.data = lm_data
 new_rc.Generate_Reservoir()
 new_rc.Train(2000)
-new_rc.Run_Generative_Stability(4000,3000)
-#new_rc.Run_Predictive_Stability(2000, 1000)
+#new_rc.Run_Generative_Stability(4000,3000)
+new_rc.Run_Predictive_Stability(2000, 1000)
 new_rc.Compute_MSE(1000)
 
-silent_run = True
-new_rc.Plots()
+plt.figure(1)
+plt.plot( new_rc.data[new_rc.train_len+1:new_rc.train_len+new_rc.test_len+1], 'r', linewidth=1 )
+plt.plot( new_rc.Y.T, '--b', linewidth=1 )
+plt.axvline(x=1000, color='k', linestyle='--', linewidth=1)
+plt.title('Optimal DSN Open Loop Stability')
+plt.xlabel('Step')
+plt.ylabel('Value')
+plt.legend(['Target signal', 'Free-running predicted signal','Signal Stop'])
+plt.show()
+#silent_run = True
+#new_rc.Plots()

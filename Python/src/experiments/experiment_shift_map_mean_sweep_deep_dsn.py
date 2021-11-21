@@ -7,20 +7,17 @@ import pandas as pd
 
 # Local imports
 import common
-from rc import *
+from ddsn import *
 
-def tm_sweep(a, res_size, ic):
+def sm_sweep(a, res_size, ic):
     length = res_size * res_size
 
     y_i = np.zeros(length)
-    mu = a
+    #y_i[0] = random.uniform(0.01, 0.09)
     y_i[0] = ic
 
-    for i in range(1,length):
-        if (y_i[i - 1] < 0.5):
-            y_i[i] = mu * y_i[i - 1]
-        elif (0.5 <= y_i[i - 1]):
-            y_i[i] = mu * 1 - y_i[i - 1]
+    for j in range(1,length):
+        y_i[j] = a * 2*y_i[j-1] % 1
 
     y_i_temp = y_i.reshape(res_size,res_size)
     y_i_shaped = np.transpose(y_i_temp)
@@ -29,21 +26,19 @@ def tm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 5
+    max_sub_iterates = 100
     res_size = 120
-    learning_rate = 0.3
+    learning_rate = 0.1
     training_length = 4000
     test_length = 1000
     mse_temp = 0
     metrics = [max_sub_iterates, res_size, learning_rate, training_length, test_length]
 
     while sub_iterates <= max_sub_iterates:
-        new_rc = RC(res_size,learning_rate)
+        new_rc = deep_dsn(res_size,learning_rate)
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
-        tm_ic = random.uniform(0.001,0.5)
-        tmp = tm_sweep(param, res_size, tm_ic)
-        new_rc.rc_data = tmp
-        new_rc.reservoir.rc_data = tmp
+        sm_ic = random.uniform(0.001, 4)
+        new_rc.rc_data  = sm_sweep(param, res_size, sm_ic)
         new_rc.Load_Data('../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
         #new_rc.Load_Data('E:\School\Graduate\Research\Code\MATLAB\datasets\chua_x.txt')
@@ -59,8 +54,8 @@ def run_exp(param):
     return (param,mse)
 
 def main():
-    param = 1.1
-    param_max = 2
+    param = 0
+    param_max = 4
     iterate = 0.01
     #sub_iterates = 0
     #max_sub_iterates = 10
@@ -106,14 +101,14 @@ def main():
     plt.title('Shift Map Parameter Sweep (Lorenz x time series)')
     plt.xlabel('Sweep Parameter (a)')
     plt.ylabel('DSN MSE')
-    #plt.axvline(x=0.5, color='k', linestyle='--', linewidth=1)
-    #plt.axvline(x=1.193, color='k', linestyle='--', linewidth=1)
-    #plt.axvspan(0, 0.5, alpha=0.1, color='green')
-    #plt.axvspan(0.5, 4, alpha=0.1, color='red')
+    plt.axvline(x=0.5, color='k', linestyle='--', linewidth=1)
+    plt.axvline(x=1.193, color='k', linestyle='--', linewidth=1)
+    plt.axvspan(0, 0.5, alpha=0.1, color='green')
+    plt.axvspan(0.5, 4, alpha=0.1, color='red')
     #plt.axvspan(0.5, 1.193, alpha=0.1, color='red')
     #plt.axvspan(1.193, 4, alpha=0.1, color='blue')
 
-    leg = plt.legend(['DSN MSE','DSN MSE Trendline','Minimum MSE'],bbox_to_anchor=(1,0.895), loc="center left", numpoints=1)
+    leg = plt.legend(['DSN MSE','DSN MSE Trendline','Minimum MSE','Shift Map LE Zero-Crossing','Negative Entropy','Positive Entropy'],bbox_to_anchor=(1,0.895), loc="center left", numpoints=1)
     leg.get_frame().set_edgecolor('black')
     side_text = plt.figtext(0.913, 0.5, 
         'Reservoir Size: '+str(res_size)+'\n'
@@ -129,6 +124,5 @@ def main():
     #plt.ylim([40,300])
     plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
     plt.show()
-
 if __name__ == "__main__":
     main()

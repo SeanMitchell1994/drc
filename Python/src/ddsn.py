@@ -7,7 +7,7 @@ import math
 from scipy import linalg 
 # numpy.linalg is also an option for even fewer dependencies
 
-class RC:
+class deep_dsn:
     def __init__(self, reservoir_size, leak):
         #print("Creating instance of RC...", end='')
 
@@ -29,6 +29,7 @@ class RC:
         # === Member variables ===
         self.Win = 0                            # Weights mapping the input data -> reservoir
         self.W = 0                              # Weights mapping the interal connections of the reservoir
+        self.W_2 = 0                            # Weights of second reservoir
         self.rhoW = 0                           # Spectral radius
         self.X = 0                              # Weights of the readout layer
         self.x = 0                              # State equation of the reservoir
@@ -44,9 +45,6 @@ class RC:
         #print('Loading reservoir core data...', end='')
         self.rc_data = np.loadtxt(data)
         #print('Done!')
-
-    def Load_Reservoir_Function(self, fcn):
-        self.rc_data = fcn
 
     def Load_Data(self, data):
         #print('Loading data...', end='')
@@ -71,8 +69,10 @@ class RC:
         np.random.seed(42)
         self.Win = (np.random.rand(self.reservoir_size,1 + self.in_size) - 0.5) * 1
         self.W = np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5
+        self.W_2 = np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5
         rcd_t = np.transpose(self.rc_data)
         self.W = np.dot(self.W, rcd_t)
+        self.W_2 = np.dot(self.W_2, rcd_t)
         #print('Done!')
 
         # normalizing and setting spectral radius (correct, slow):
@@ -92,11 +92,13 @@ class RC:
 
         # run the reservoir with the data and collect X
         self.x = np.zeros((self.reservoir_size,1))
+        self.x_1 = np.zeros((self.reservoir_size,1))
         for t in range(self.train_len):
             u = self.data[t]
-            self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
+            self.x = (1-self.leak)*self.x_1 + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x_1 ) )
+            self.x_1 = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
             if t >= self.init_len:
-                self.X[:,t-self.init_len] = np.vstack((1,u,self.x))[:,0]
+                self.X[:,t-self.init_len] = np.vstack((1,u,self.x_1))[:,0]
             
         # train the output by ridge regression
         reg = 1e-8  # regularization coefficient
@@ -170,8 +172,9 @@ class RC:
         self.Y = np.zeros((self.out_size,self.test_len))
         u = self.data[self.train_len]
         for t in range(self.test_len):
-            self.x = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) ) 
-            y = np.dot( self.Wout, np.vstack((1,u,self.x)) )
+            self.x = (1-self.leak)*self.x_1 + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x_1 ) ) 
+            self.x_1 = (1-self.leak)*self.x + self.leak*np.tanh( np.dot( self.Win, np.vstack((1,u)) ) + np.dot( self.W, self.x ) )
+            y = np.dot( self.Wout, np.vstack((1,u,self.x_1)) )
             self.Y[:,t] = y
    
             # Predictive mode

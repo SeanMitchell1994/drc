@@ -29,7 +29,7 @@ def main():
     learning_rate = 0.3
     training_length = 4000
     test_length = 1000
-    sm_ic = 0.4
+    sm_ic = 0.2
     mse_list = []
     param_list = []
 
@@ -88,7 +88,7 @@ def main():
         +'MSE std dev: ' + "{:e}".format(stddev)
         , bbox=dict(facecolor='white'))
     #plt.ylim([40,300])
-    #plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
+    plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
     plt.show()
 if __name__ == "__main__":
     main()

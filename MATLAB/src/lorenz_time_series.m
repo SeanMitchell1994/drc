@@ -9,7 +9,7 @@ beta = 8/3;
 rho = 28;
 
 % Solving for x_0 = 1
-[t_total, y1] = ode45(@(t_total, y1) lorenz(t_total, y1, sigma, beta, rho), t_total, [1 0 0]);
+[t_total, y1] = ode45(@(t_total, y1) lorenz(t_total, y1, sigma, beta, rho), t_total, [0 1 0]);
 x1 = y1(:,1);
 z1 = y1(:,3);
 y1 = y1(:,2);

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+from scipy.signal import savgol_filter
 
 # Local imports
 import common
@@ -37,10 +38,10 @@ def lm_sweep(a, res_size, ic):
     return y_i_shaped
 
 def main():
-    param = 3.600
+    param = 3.1
     #param_max = 4
     run_cur = 0
-    run_end = 1000
+    run_end = 10000
     iterate = 0.01
     res_size = 120
     learning_rate = 0.3
@@ -51,7 +52,7 @@ def main():
     param_list = []
 
     while run_cur <= run_end:
-        sm_ic = random.uniform(0.001, 0.009)
+        sm_ic = random.uniform(0.001, 1)
         new_rc = RC(res_size,learning_rate)
         new_rc.rc_data  = lm_sweep(param, res_size, sm_ic)
         new_rc.Load_Data('../../datasets/lorenz_x.txt')
@@ -77,8 +78,10 @@ def main():
     #print(mse_list)
     #z1 = np.polyfit(param_list, mse_list, 1)
     #p = np.poly1d(z1)
+    yhat = savgol_filter(mse_list, 5, 3) # window size 51, polynomial order 3
 
-    plt.scatter( param_list,mse_list, linewidth=1 )
+    plt.scatter( param_list,mse_list,s=10)
+    #plt.plot( param_list,yhat, linewidth=1 )
     #plt.imshow(mse_list, cmap="hot", interpolation="nearest")
     plt.xlabel('SM IC')
     plt.ylabel('DSN MSE')
