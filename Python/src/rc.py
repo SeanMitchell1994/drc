@@ -233,13 +233,13 @@ class RC:
 
     def Plots(self,silent=False):
 
-        self.Output_Init()
+        #self.Output_Init()
 
         # plot some of it
         plt.figure(10).clear()
         plt.plot(self.data[:1000])
         plt.title('A sample of data')
-        plt.savefig('../../run/output/%s/plots/data_sample.png' % self.st, bbox_inches='tight')
+        #plt.savefig('../../run/output/%s/plots/data_sample.png' % self.st, bbox_inches='tight')
 
         # plot some signals
         plt.figure(1).clear()
@@ -250,17 +250,17 @@ class RC:
         #xc1 = [600]
         #for xc in xc1:
         #    plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
-        plt.savefig('../../run/output/%s/plots/target_predicted_signal.png' % self.st, bbox_inches='tight')
+        #plt.savefig('../../run/output/%s/plots/target_predicted_signal.png' % self.st, bbox_inches='tight')
 
         plt.figure(2).clear()
         plt.plot( self.X[0:20,0:200].T )
         plt.title(r'Some reservoir activations $\mathbf{x}(n)$')
-        plt.savefig('../../run/output/%s/plots/reservoir_activations.png' % self.st, bbox_inches='tight')
+        #plt.savefig('../../run/output/%s/plots/reservoir_activations.png' % self.st, bbox_inches='tight')
 
         plt.figure(3).clear()
         plt.bar( np.arange(1+self.in_size+self.reservoir_size), self.Wout[0].T )
         plt.title(r'Output weights $\mathbf{W}^{out}$')
-        plt.savefig('../../run/output/%s/plots/output_weights.png' % self.st, bbox_inches='tight')
+        #plt.savefig('../../run/output/%s/plots/output_weights.png' % self.st, bbox_inches='tight')
 
         if (silent == False):
             plt.show()

@@ -8,6 +8,7 @@ import pandas as pd
 # Local imports
 import common
 from rc import *
+from logger import *
 
 def sm_sweep(a, res_size, ic):
     length = res_size * res_size
@@ -26,7 +27,7 @@ def sm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 25
+    max_sub_iterates = 1
     res_size = 120
     learning_rate = 0.1
     training_length = 4000
@@ -68,6 +69,8 @@ def main():
     values = []
     mse_list = []
     param_list = []
+
+    logger = Logger()
     print("Starting monte carlo")
 
     while param <= param_max:
@@ -90,7 +93,7 @@ def main():
     p = np.poly1d(z1)
 
     df = pd.DataFrame(param_list,mse_list) 
-    df.to_csv('dsn_sweep.csv') 
+    logger.Save_Data(df, "dsn_sweep")
 
     print("Done!")
 
@@ -122,7 +125,8 @@ def main():
         +'MSE std dev: ' + "{:e}".format(stddev)
         , bbox=dict(facecolor='white'))
     #plt.ylim([40,300])
-    plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
-    plt.show()
+    #plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
+    logger.Save_Fig(plt,leg,"shift_map_sweep")
+    #plt.show()
 if __name__ == "__main__":
     main()

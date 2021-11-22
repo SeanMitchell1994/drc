@@ -1,4 +1,5 @@
 from rc import *
+from logger import *
 import matplotlib.pyplot as plt
 
 new_rc = RC(120,0.3)
@@ -8,7 +9,7 @@ new_rc.Generate_Reservoir()
 new_rc.Train(4000)
 new_rc.Run_Predictive(1000)
 new_rc.Compute_MSE(1000)
-new_rc.Save_Metrics()
+#new_rc.Save_Metrics()
 
 print(new_rc.Get_MSE())
 silent_run = False
