@@ -56,7 +56,7 @@ def run_exp(param):
 def main():
     param = 0
     param_max = 4
-    iterate = 0.01
+    iterate = 0.1
     #sub_iterates = 0
     #max_sub_iterates = 10
     res_size = 120

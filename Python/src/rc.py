@@ -42,8 +42,6 @@ class RC:
 
         #print("Done!")
 
-        self.Output_Init()
-
     def Load_Reservoir_Data(self, data):
         #print('Loading reservoir core data...', end='')
         self.rc_data = np.loadtxt(data)
@@ -268,6 +266,9 @@ class RC:
             plt.show()
 
     def Save_Metrics(self):
+
+        self.Output_Init()
+
         dirname = os.path.dirname(__file__)
         filename = '../../run/output/%s/metrics/metrics.txt' % self.st
         f = open(filename, "w+")
