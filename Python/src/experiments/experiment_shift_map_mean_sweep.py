@@ -26,7 +26,7 @@ def sm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 225
+    max_sub_iterates = 25
     res_size = 120
     learning_rate = 0.1
     training_length = 4000
@@ -74,7 +74,7 @@ def main():
         values.append(param)
         param = param + iterate
 
-    pool = Pool(processes=12)
+    pool = Pool()
     param_list,mse_list = zip(*pool.map(run_exp, values))
 
     stddev = np.std(mse_list)

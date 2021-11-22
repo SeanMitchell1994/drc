@@ -5,6 +5,8 @@ import random
 import matplotlib.pyplot as plt
 import math
 from scipy import linalg 
+import datetime
+import time
 # numpy.linalg is also an option for even fewer dependencies
 
 class RC:
@@ -39,6 +41,8 @@ class RC:
         self.mse = 0                            # Our actual error rate
 
         #print("Done!")
+
+        self.Output_Init()
 
     def Load_Reservoir_Data(self, data):
         #print('Loading reservoir core data...', end='')
@@ -192,7 +196,39 @@ class RC:
     def Output_Init(self):
         # Checks if the output path exists and makes it if it doesn't
         try:
-            os.makedirs("../output/")
+            os.makedirs("../../run/")
+        except FileExistsError:
+            # path already exists, move on
+            pass
+
+        try:
+            os.makedirs("../../run/output")
+        except FileExistsError:
+            # path already exists, move on
+            pass
+    
+        ts = time.time()
+        self.st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
+        try:
+            os.makedirs("../../run/output/%s" % self.st)
+        except FileExistsError:
+            # path already exists, move on
+            pass
+
+        try:
+            os.makedirs("../../run/output/%s/metrics" % self.st)
+        except FileExistsError:
+            # path already exists, move on
+            pass
+
+        try:
+            os.makedirs("../../run/output/%s/plots" % self.st)
+        except FileExistsError:
+            # path already exists, move on
+            pass
+
+        try:
+            os.makedirs("../../run/output/%s/data" % self.st)
         except FileExistsError:
             # path already exists, move on
             pass
@@ -205,7 +241,7 @@ class RC:
         plt.figure(10).clear()
         plt.plot(self.data[:1000])
         plt.title('A sample of data')
-        plt.savefig('../output/data_sample.png', bbox_inches='tight')
+        plt.savefig('../../run/output/%s/plots/data_sample.png' % self.st, bbox_inches='tight')
 
         # plot some signals
         plt.figure(1).clear()
@@ -216,24 +252,24 @@ class RC:
         #xc1 = [600]
         #for xc in xc1:
         #    plt.axvline(x=xc, color='k', linestyle='--', linewidth=1)
-        plt.savefig('../output/target_predicted_signal.png', bbox_inches='tight')
+        plt.savefig('../../run/output/%s/plots/target_predicted_signal.png' % self.st, bbox_inches='tight')
 
         plt.figure(2).clear()
         plt.plot( self.X[0:20,0:200].T )
         plt.title(r'Some reservoir activations $\mathbf{x}(n)$')
-        plt.savefig('../output/reservoir_activations.png', bbox_inches='tight')
+        plt.savefig('../../run/output/%s/plots/reservoir_activations.png' % self.st, bbox_inches='tight')
 
         plt.figure(3).clear()
         plt.bar( np.arange(1+self.in_size+self.reservoir_size), self.Wout[0].T )
         plt.title(r'Output weights $\mathbf{W}^{out}$')
-        plt.savefig('../output/output_weights.png', bbox_inches='tight')
+        plt.savefig('../../run/output/%s/plots/output_weights.png' % self.st, bbox_inches='tight')
 
         if (silent == False):
             plt.show()
 
     def Save_Metrics(self):
         dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, '../run/metrics/metrics.txt')
+        filename = '../../run/output/%s/metrics/metrics.txt' % self.st
         f = open(filename, "w+")
 
         s = []
