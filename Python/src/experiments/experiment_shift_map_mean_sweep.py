@@ -27,11 +27,11 @@ def sm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 1
+    max_sub_iterates = 225
     res_size = 120
     learning_rate = 0.1
     training_length = 4000
-    test_length = 1000
+    test_length = 500
     mse_temp = 0
     metrics = [max_sub_iterates, res_size, learning_rate, training_length, test_length]
 
@@ -40,9 +40,9 @@ def run_exp(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 4)
         new_rc.Load_Reservoir_Function(sm_sweep(param, res_size, sm_ic))
-        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
+        #new_rc.Load_Data('../../../datasets/lorenz_z.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
-        #new_rc.Load_Data('E:\School\Graduate\Research\Code\MATLAB\datasets\chua_x.txt')
+        new_rc.Load_Data('../../../datasets/chua_x.txt')
         new_rc.Generate_Reservoir()
         new_rc.Train(training_length)
         new_rc.Run_Predictive(test_length)
@@ -57,7 +57,7 @@ def run_exp(param):
 def main():
     param = 0
     param_max = 4
-    iterate = 0.1
+    iterate = 0.01
     #sub_iterates = 0
     #max_sub_iterates = 10
     res_size = 120
@@ -89,7 +89,7 @@ def main():
     min = np.amin(mse_list)
     print("minimum: ", min)
 
-    z1 = np.polyfit(param_list, mse_list, 5)
+    z1 = np.polyfit(param_list, mse_list, 9)
     p = np.poly1d(z1)
 
     df = pd.DataFrame(param_list,mse_list) 
@@ -98,7 +98,7 @@ def main():
     print("Done!")
 
     plt.figure(figsize=(10, 8), dpi=100).clear()
-    plt.plot( param_list,mse_list, linewidth=1 )
+    plt.plot( param_list,mse_list, linewidth=0.5 )
     plt.plot( param_list,p(param_list),'r--', linewidth=1)
     plt.plot(param_list[mse_list.index(min)],mse_list[mse_list.index(min)],'ro') 
     plt.title('Shift Map Parameter Sweep (Lorenz x time series)')
@@ -107,7 +107,7 @@ def main():
     plt.axvline(x=0.5, color='k', linestyle='--', linewidth=1)
     plt.axvline(x=1.193, color='k', linestyle='--', linewidth=1)
     plt.axvspan(0, 0.5, alpha=0.1, color='green')
-    plt.axvspan(0.5, 4, alpha=0.1, color='red')
+    plt.axvspan(0.5, 2, alpha=0.1, color='red')
     #plt.axvspan(0.5, 1.193, alpha=0.1, color='red')
     #plt.axvspan(1.193, 4, alpha=0.1, color='blue')
 
@@ -128,5 +128,6 @@ def main():
     #plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
     logger.Save_Fig(plt,leg,"shift_map_sweep")
     #plt.show()
+
 if __name__ == "__main__":
     main()
