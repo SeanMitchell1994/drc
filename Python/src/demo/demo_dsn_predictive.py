@@ -19,29 +19,45 @@ def shift_map(a, res_size, ic):
 
 def main():
 
-    res_size = 120
-    learning_rate = 0.3
-    training_length = 1000
-    test_length = 1000
-    sm_ic = 0.4
-    sm_slope = 2
+    # === Runtime variables ===
+    res_size = 120              # Size of the reservoir (nxn matrix)
+    learning_rate = 0.3         # learning rate/neural leak/transient rsp
+    training_length = 1000      # Length of data we train on
+    test_length = 1000          # length of data we test on
+    sm_ic = 0.4                 # IC for shift map
+    sm_slope = 2                # Slope of shift map
 
+    # === Data variables ===
     res_fcn = shift_map(sm_slope, res_size, sm_ic)
     dataset = '../../../datasets/lorenz_x.txt'
     # values = []
     # mse_list = []
     # param_list = []
 
+    # === RC stuff ===
+    # create new RC object
     new_rc = RC(res_size, learning_rate)
-    #new_rc.Load_Reservoir_Data('../../../datasets/logistic_map_shaped.txt')
+
+    # Load the reservoir with complexity from the res. function
     new_rc.Load_Reservoir_Function(res_fcn)
+
+    # Load the data we want to train and test with
     new_rc.Load_Data(dataset)
+
+    # Actually generate the reservoir now that we've set up all the variables
     new_rc.Generate_Reservoir()
+
+    # Train it
     new_rc.Train(training_length)
+
+    # Test it
     new_rc.Run_Predictive(test_length)
+
+    # How accurate were we?
     new_rc.Compute_MSE(test_length)
     #new_rc.Save_Metrics()
 
+    # Produce plots
     print(new_rc.Get_MSE())
     silent_run = False
     new_rc.Plots(silent_run)

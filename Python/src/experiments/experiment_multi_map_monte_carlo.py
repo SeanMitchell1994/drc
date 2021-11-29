@@ -40,7 +40,7 @@ def lm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 50
+    max_sub_iterates = 25
     res_size = 120
     learning_rate = 0.3
     training_length = 4000
@@ -53,7 +53,7 @@ def run_exp(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 1)
         new_rc.rc_data  = sm_sweep(param, res_size, sm_ic)
-        new_rc.Load_Data('../../datasets/lorenz_x.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
         #new_rc.Load_Data('E:\School\Graduate\Research\Code\MATLAB\datasets\chua_x.txt')
         new_rc.Generate_Reservoir()
@@ -69,7 +69,7 @@ def run_exp(param):
 
 def run_exp2(param):
     sub_iterates = 0
-    max_sub_iterates = 50
+    max_sub_iterates = 25
     res_size = 120
     learning_rate = 0.3
     training_length = 4000
@@ -82,7 +82,7 @@ def run_exp2(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 1)
         new_rc.rc_data  = lm_sweep(param, res_size, sm_ic)
-        new_rc.Load_Data('../../datasets/lorenz_y.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
         #new_rc.Load_Data('E:\School\Graduate\Research\Code\MATLAB\datasets\chua_x.txt')
         new_rc.Generate_Reservoir()
@@ -119,10 +119,10 @@ def main():
         values.append(param)
         param = param + iterate
 
-    pool = Pool(processes=12)
+    pool = Pool()
     param_list,mse_list = zip(*pool.map(run_exp, values))
 
-    pool = Pool(processes=12)
+    pool = Pool()
     lm_param_list,lm_mse_list = zip(*pool.map(run_exp2, values))
 
     # stddev = np.std(mse_list)
@@ -137,10 +137,10 @@ def main():
     # z1 = np.polyfit(param_list, mse_list, 1)
     # p = np.poly1d(z1)
 
-    df = pd.DataFrame(param_list,mse_list) 
-    df.to_csv('Python/run/shift_map.csv') 
-    df = pd.DataFrame(param_list,mse_list) 
-    df.to_csv('Python/run/logistics_map.csv') 
+    # df = pd.DataFrame(param_list,mse_list) 
+    # df.to_csv('Python/run/shift_map.csv') 
+    # df = pd.DataFrame(param_list,mse_list) 
+    # df.to_csv('Python/run/logistics_map.csv') 
 
     print("Done!")
 
