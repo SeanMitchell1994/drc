@@ -1,4 +1,14 @@
-# Local imports
+# ===============================================
+# demo_dsn_predictive.py
+#
+# small demo of the DSN running a time series
+# prediction using a shift map as r(t)
+# ===============================================
+
+# === global imports ===
+import pandas
+
+# === Local imports ===
 import common
 from rc import *
 from logger import *
@@ -30,9 +40,10 @@ def main():
     # === Data variables ===
     res_fcn = shift_map(sm_slope, res_size, sm_ic)
     dataset = '../../../datasets/lorenz_x.txt'
-    # values = []
-    # mse_list = []
-    # param_list = []
+
+    # Logging object that collects and saves outputs, metrics, plots, etc
+    # This is optional and you can run without
+    logger = Logger()
 
     # === RC stuff ===
     # create new RC object
@@ -56,6 +67,9 @@ def main():
     # How accurate were we?
     new_rc.Compute_MSE(test_length)
     #new_rc.Save_Metrics()
+
+    df = pandas.DataFrame(res_fcn) 
+    logger.Save_Data(df, "reservoir_function")
 
     # Produce plots
     print(new_rc.Get_MSE())

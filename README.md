@@ -22,3 +22,4 @@
         * numpy
         * scipy
         * matplotlib
+        * pandas
