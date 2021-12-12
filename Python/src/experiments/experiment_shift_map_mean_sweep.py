@@ -27,7 +27,7 @@ def sm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 225
+    max_sub_iterates = 1
     res_size = 120
     learning_rate = 0.1
     training_length = 4000
@@ -37,16 +37,14 @@ def run_exp(param):
 
     while sub_iterates <= max_sub_iterates:
         new_rc = RC(res_size,learning_rate)
-        #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 4)
         new_rc.Load_Reservoir_Function(sm_sweep(param, res_size, sm_ic))
-        #new_rc.Load_Data('../../../datasets/lorenz_z.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
-        new_rc.Load_Data('../../../datasets/chua_x.txt')
+        #new_rc.Load_Data('../../../datasets/chua_x.txt')
         new_rc.Generate_Reservoir()
         new_rc.Train(training_length)
         new_rc.Run_Predictive(test_length)
-        #new_rc.Run_Generative(1000)
         new_rc.Compute_MSE(test_length)
         mse_temp = new_rc.Get_MSE() + mse_temp
         sub_iterates = sub_iterates + 1
@@ -57,7 +55,7 @@ def run_exp(param):
 def main():
     param = 0
     param_max = 4
-    iterate = 0.01
+    iterate = 0.1
     #sub_iterates = 0
     #max_sub_iterates = 10
     res_size = 120
@@ -97,7 +95,7 @@ def main():
 
     print("Done!")
 
-    plt.figure(figsize=(10, 8), dpi=100).clear()
+    plt.figure(figsize=(14, 8), dpi=100).clear()
     plt.plot( param_list,mse_list, linewidth=0.5 )
     plt.plot( param_list,p(param_list),'r--', linewidth=1)
     plt.plot(param_list[mse_list.index(min)],mse_list[mse_list.index(min)],'ro') 
@@ -107,9 +105,9 @@ def main():
     plt.axvline(x=0.5, color='k', linestyle='--', linewidth=1)
     plt.axvline(x=1.193, color='k', linestyle='--', linewidth=1)
     plt.axvspan(0, 0.5, alpha=0.1, color='green')
-    plt.axvspan(0.5, 2, alpha=0.1, color='red')
-    #plt.axvspan(0.5, 1.193, alpha=0.1, color='red')
-    #plt.axvspan(1.193, 4, alpha=0.1, color='blue')
+    plt.axvspan(0.5, 4, alpha=0.1, color='red')
+    plt.axvspan(0.5, 1.193, alpha=0.1, color='red')
+    plt.axvspan(1.193, 4, alpha=0.1, color='blue')
 
     leg = plt.legend(['DSN MSE','DSN MSE Trendline','Minimum MSE','Shift Map LE Zero-Crossing','Negative Entropy','Positive Entropy'],bbox_to_anchor=(1,0.895), loc="center left", numpoints=1)
     leg.get_frame().set_edgecolor('black')

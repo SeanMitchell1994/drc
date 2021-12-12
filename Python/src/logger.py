@@ -4,7 +4,7 @@ import time
 
 class Logger:
     def __init__(self):
-        print("logger init")
+        #print("logger init")
 
         self.mode = ""
         self.dir_name = ""
@@ -61,9 +61,9 @@ class Logger:
         print("logging function")
 
     def Save_Data(self, data, fname):
-        print("Data save")
+        #print("Data save")
         data.to_csv("%s/data/%s.csv" % (self.dir_name, fname))
 
     def Save_Fig(self,plt, legend, fname):
-        print("Fig save")
+        #print("Fig save")
         plt.savefig("%s/plots/%s.jpg" % (self.dir_name, fname), bbox_extra_artists=(legend,), bbox_inches='tight', dpi=100)
