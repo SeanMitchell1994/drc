@@ -43,6 +43,7 @@ def main():
 
     # Logging object that collects and saves outputs, metrics, plots, etc
     # This is optional and you can run without
+    # This puts the output in the /run directory
     logger = Logger()
 
     # === RC stuff ===
