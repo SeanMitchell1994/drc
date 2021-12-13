@@ -40,6 +40,8 @@ def main():
     # === Data variables ===
     res_fcn = shift_map(sm_slope, res_size, sm_ic)
     dataset = '../../../datasets/lorenz_x.txt'
+    #dataset = '../../../datasets/MackeyGlass_t17.txt'
+    #dataset = '../../../datasets/chua_x.txt'
 
     # Logging object that collects and saves outputs, metrics, plots, etc
     # This is optional and you can run without

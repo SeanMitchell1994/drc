@@ -17,7 +17,7 @@ def main():
     plt.plot(r_lya,lm_lya,'g')
     plt.plot(r_lya, lorenz_x_lya[0:4001],'r')
     #plt.fill_between(r_lya, sm_lya, lorenz_x_lya[0:4001],where=(sm_lya >= lorenz_x_lya[0:4001]), color='C1', alpha=0.3, interpolate=True)
-    plt.axhline(y=0.0, color='k', linestyle='--', linewidth=0.5)
+    plt.axhline(y=0.0, color='k', linestyle='-', linewidth=1)
     plt.axvline(x=0.5, color='k', linestyle='--', linewidth=1)
     plt.axvline(x=1.125, color='k', linestyle='--', linewidth=1)
     plt.axvspan(0, 0.5, alpha=0.1, color='green')
