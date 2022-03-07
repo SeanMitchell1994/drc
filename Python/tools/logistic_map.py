@@ -5,7 +5,7 @@
 import numpy as np
 
 length = 10000
-a = 3.4
+a = 3.95
 
 y_i = np.zeros(length)
 y_i[0] = 0.7920

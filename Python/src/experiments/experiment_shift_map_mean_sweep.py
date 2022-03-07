@@ -28,10 +28,10 @@ def sm_sweep(a, res_size, ic):
 def run_exp(param):
     sub_iterates = 0
     max_sub_iterates = 100
-    res_size = 120
+    res_size = 32
     learning_rate = 0.3
-    training_length = 1000
-    test_length = 2000
+    training_length = 500
+    test_length = 5000
     mse_temp = 0
     metrics = [max_sub_iterates, res_size, learning_rate, training_length, test_length]
 
@@ -57,13 +57,13 @@ def run_exp(param):
 def main():
     param = 0
     param_max = 2
-    iterate = 0.1
+    iterate = 0.01
     #sub_iterates = 0
     #max_sub_iterates = 10
-    res_size = 120
+    res_size = 8
     learning_rate = 0.3
-    training_length = 1000
-    test_length = 2000
+    training_length = 500
+    test_length = 5000
     #mse_temp = 0
     sm_ic = 0.4
     values = []
