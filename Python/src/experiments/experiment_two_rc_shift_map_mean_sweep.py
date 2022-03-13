@@ -28,9 +28,9 @@ def sm_sweep(a, res_size, ic):
 def run_exp(param):
     sub_iterates = 0
     max_sub_iterates = 100
-    res_size = 64
-    learning_rate = 0.1
-    training_length = 1000
+    res_size = 32
+    learning_rate = 0.3
+    training_length = 3000
     test_length = 6000
     mse_temp = 0
 
@@ -58,9 +58,9 @@ def run_exp(param):
 def run_esn_exp(param):
     sub_iterates = 0
     max_sub_iterates = 1
-    res_size = 64
-    learning_rate = 0.4
-    training_length = 500
+    res_size = 32
+    learning_rate = 0.3
+    training_length = 3000
     test_length = 6000
     mse_temp = 0
 
@@ -71,9 +71,9 @@ def run_esn_exp(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 4)
         #new_rc.rc_data  = sm_sweep(param, res_size, sm_ic)
-        #new_rc.Load_Data('../../datasets/lorenz_x.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
-        new_rc.Load_Data('../../../datasets/logistic_map_raw.txt')
+        #new_rc.Load_Data('../../../datasets/logistic_map_raw.txt')
         new_rc.Generate_Reservoir()
         new_rc.Train(training_length)
         new_rc.Run_Predictive(test_length)
