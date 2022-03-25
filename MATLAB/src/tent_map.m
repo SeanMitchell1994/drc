@@ -1,7 +1,7 @@
 k = [0:0.5:25];                 % length of time series
 y_i = zeros(1,length(k));   % Pre-allocation
 y_i(1) = 0.6;                 % initial condition
-mu = 1.9;
+mu = 1;
 
 % Solving the iterated solution
 for i = 2:length(y_i)

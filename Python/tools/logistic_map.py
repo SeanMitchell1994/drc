@@ -5,7 +5,7 @@
 import numpy as np
 
 length = 10000
-a = 3.75
+a = 3.95
 
 y_i = np.zeros(length)
 y_i[0] = 0.7920
@@ -16,5 +16,5 @@ for j in range(1,length):
 #y_i_temp = y_i.reshape(120,120)
 #y_i_shaped = np.transpose(y_i_temp)
 
-np.savetxt('../../datasets/logistic_map_raw.txt', y_i)
+np.savetxt('../../../datasets/logistic_map_raw.txt', y_i)
 #np.savetxt('../../datasets/logistic_map_shaped.txt', y_i_shaped)

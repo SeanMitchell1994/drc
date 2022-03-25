@@ -27,11 +27,11 @@ def sm_sweep(a, res_size, ic):
 
 def run_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 225
-    res_size = 120
+    max_sub_iterates = 100
+    res_size = 32
     learning_rate = 0.3
-    training_length = 2000
-    test_length = 1000
+    training_length = 3000
+    test_length = 6000
     mse_temp = 0
 
     metrics = [max_sub_iterates, res_size, learning_rate, training_length, test_length]
@@ -41,9 +41,9 @@ def run_exp(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 4)
         new_rc.rc_data  = sm_sweep(param, res_size, sm_ic)
-        new_rc.Load_Data('../../datasets/lorenz_x.txt')
-        #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
-        #new_rc.Load_Data('../../datasets/logistic_map_raw.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
+        #new_rc.Load_Data('../../../datasets/MackeyGlass_t17.txt')
+        #new_rc.Load_Data('../../../datasets/logistic_map_raw.txt')
         new_rc.Generate_Reservoir()
         new_rc.Train(training_length)
         new_rc.Run_Predictive(test_length)
@@ -57,11 +57,11 @@ def run_exp(param):
 
 def run_esn_exp(param):
     sub_iterates = 0
-    max_sub_iterates = 225
-    res_size = 120
+    max_sub_iterates = 1
+    res_size = 32
     learning_rate = 0.3
-    training_length = 2000
-    test_length = 1000
+    training_length = 3000
+    test_length = 6000
     mse_temp = 0
 
     metrics = [max_sub_iterates, res_size, learning_rate, training_length, test_length]
@@ -71,9 +71,9 @@ def run_esn_exp(param):
         #new_rc.Load_Reservoir_Data('../../datasets/logistic_map_shaped.txt')
         sm_ic = random.uniform(0.001, 4)
         #new_rc.rc_data  = sm_sweep(param, res_size, sm_ic)
-        new_rc.Load_Data('../../datasets/lorenz_x.txt')
+        new_rc.Load_Data('../../../datasets/lorenz_x.txt')
         #new_rc.Load_Data('../../datasets/MackeyGlass_t17.txt')
-        #new_rc.Load_Data('../../datasets/logistic_map_raw.txt')
+        #new_rc.Load_Data('../../../datasets/logistic_map_raw.txt')
         new_rc.Generate_Reservoir()
         new_rc.Train(training_length)
         new_rc.Run_Predictive(test_length)
@@ -87,9 +87,9 @@ def run_esn_exp(param):
 
 def main():
     param = 0
-    param_max = 4
-    iterate = 0.01
-    sub_iterates = 225
+    param_max = 2
+    iterate = 0.001
+    sub_iterates = 100
     #max_sub_iterates = 10
     res_size = 120
     learning_rate = 0.3
@@ -105,10 +105,10 @@ def main():
         values.append(param)
         param = param + iterate
 
-    pool = Pool(processes=12)
+    pool = Pool()
     param_list,mse_list = zip(*pool.map(run_exp, values))
 
-    pool = Pool(processes=12)
+    pool = Pool()
     param_list_esn,mse_list_esn = zip(*pool.map(run_esn_exp, values))
 
     stddev = np.std(mse_list)
@@ -132,8 +132,8 @@ def main():
 
     df = pd.DataFrame(param_list, mse_list) 
     df2 = pd.DataFrame(param_list_esn, mse_list_esn) 
-    df.to_csv('dsn.csv') 
-    df2.to_csv('esn.csv') 
+    #df.to_csv('dsn.csv') 
+    #df2.to_csv('esn.csv') 
 
     plt.figure(figsize=(10, 8), dpi=100).clear()
     plt.plot( param_list,mse_list, 'b', linewidth=1)
@@ -145,7 +145,7 @@ def main():
     plt.ylabel('Mean Square Error (MSE)')
     plt.axvline(x=0.5, color='k', linestyle='--', linewidth=1)
     plt.axvspan(0, 0.5, alpha=0.1, color='green')
-    plt.axvspan(0.5, 4, alpha=0.1, color='red')
+    plt.axvspan(0.5, 2, alpha=0.1, color='red')
 
     leg = plt.legend(['DSN MSE','ESN MSE','Minimum DSN MSE','Shift Map LE Zero-Crossing','Negative Entropy','Positive Entropy'],bbox_to_anchor=(1,0.895), loc="center left", numpoints=1)
     leg.get_frame().set_edgecolor('black')
@@ -165,7 +165,7 @@ def main():
         +'Mean Improvement: ' + "{:.4}".format(improvement) +'%'
         , bbox=dict(facecolor='white'))
     #plt.ylim([40,300])
-    plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
+    #plt.savefig('out.png', bbox_extra_artists=(leg,), bbox_inches='tight', dpi=100)
     plt.show()
 if __name__ == "__main__":
     main()
